@@ -1,0 +1,65 @@
+---
+// Base Layout — HTML shell, fonts, meta tags, SEO, base styles
+// Used by index.astro to wrap all content
+import "../styles/globals.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "Chaman — Flutter Developer",
+  description = "Curious and organized. I solve everyday problems with robust, out-of-the-box thinking — algorithms, logic, and maintainability first.",
+  image = "/icons/og-image.svg",
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="blueprint">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Chaman" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts: Fraunces + IBM Plex Sans + IBM Plex Mono + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..900,0..100&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Themes toggle script (runs immediately to prevent flash) -->
+    <script is:inline>
+      (function() {
+        var theme = localStorage.getItem('dev-foliio-theme') || 'blueprint';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body class="planner-bg min-h-screen font-body">
+    <!-- Skip to content (accessibility) -->
+    <a
+      href="#hero"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[99999] focus:px-4 focus:py-2 focus:bg-primary focus:text-[var(--theme-bg)] focus:rounded-lg focus:text-sm focus:font-bold"
+    >
+      Skip to content
+    </a>
+
+    <slot />
+  </body>
+</html>

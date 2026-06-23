@@ -1,0 +1,391 @@
+---
+/**
+ * ╔══════════════════════════════════════════════════════════════════╗
+ * ║  LIVE ACTIVITY HUD — the signature "memorable" element              ║
+ * ╚══════════════════════════════════════════════════════════════════╝
+ * A theme-aware glassmorphic widget that tracks real, live session
+ * metrics with NO backend:
+ *   - keystrokes typed this session
+ *   - pixels scrolled
+ *   - time since last idle (resets on activity)
+ *   - current section name
+ *   - session uptime (mm:ss)
+ *   - live scroll-velocity sparkline (ASCII-ish bars)
+ *
+ * Pure vanilla, ~2KB. Draggable on desktop, collapses to a chip on mobile.
+ * Never blocks interaction: pointer-events only on the header.
+ */
+---
+
+<aside
+  class="hud glass-strong"
+  data-hud
+  role="complementary"
+  aria-label="Live session activity monitor"
+  aria-live="off"
+>
+  <header class="hud-head" data-hud-grip>
+    <span class="hud-led" aria-hidden="true"></span>
+    <span class="hud-title">activity · live</span>
+    <div class="hud-actions" aria-hidden="true">
+      <button type="button" class="hud-btn" data-hud-min title="minimize">_</button>
+      <button type="button" class="hud-btn" data-hud-close title="dismiss">×</button>
+    </div>
+  </header>
+
+  <div class="hud-body" data-hud-body>
+    <dl class="hud-grid">
+      <div class="hud-cell">
+        <dt>uptime</dt>
+        <dd><span data-hud-uptime>00:00</span></dd>
+      </div>
+      <div class="hud-cell">
+        <dt>section</dt>
+        <dd><span data-hud-section>hero</span></dd>
+      </div>
+      <div class="hud-cell">
+        <dt>keys</dt>
+        <dd><span data-hud-keys>0</span></dd>
+      </div>
+      <div class="hud-cell">
+        <dt>scrolled</dt>
+        <dd><span data-hud-scroll>0</span><span class="hud-unit">px</span></dd>
+      </div>
+      <div class="hud-cell">
+        <dt>idle</dt>
+        <dd><span data-hud-idle>0s</span></dd>
+      </div>
+      <div class="hud-cell">
+        <dt>vel</dt>
+        <dd><span class="hud-velbars" data-hud-vel aria-hidden="true"></span></dd>
+      </div>
+    </dl>
+    <p class="hud-foot">no backend · no cookies · just you &amp; this page</p>
+  </div>
+</aside>
+
+<style>
+  .hud {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 35;
+    width: 16rem;
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--t-text);
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.3s ease;
+    user-select: none;
+  }
+  .hud.minimized .hud-body {
+    display: none;
+  }
+  .hud.minimized {
+    width: auto;
+  }
+
+  .hud-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    cursor: grab;
+    border-bottom: 1px solid var(--t-border);
+  }
+  .hud-head:active {
+    cursor: grabbing;
+  }
+  .hud-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--t-accent);
+    box-shadow: 0 0 8px var(--t-accent);
+    animation: hud-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes hud-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.8); }
+  }
+  .hud-title {
+    flex: 1;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .hud-actions {
+    display: flex;
+    gap: 0.15rem;
+  }
+  .hud-btn {
+    width: 18px;
+    height: 18px;
+    line-height: 16px;
+    text-align: center;
+    border: 0;
+    background: transparent;
+    color: var(--t-text-muted);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+  }
+  .hud-btn:hover {
+    background: var(--t-surface);
+    color: var(--t-text);
+  }
+
+  .hud-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 0.6rem;
+    padding: 0.6rem 0.65rem 0.4rem;
+    margin: 0;
+  }
+  .hud-cell {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .hud-cell dt {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--t-text-muted);
+  }
+  .hud-cell dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--t-text);
+  }
+  .hud-unit {
+    font-size: 0.6rem;
+    color: var(--t-text-muted);
+    font-weight: 400;
+    margin-left: 0.15rem;
+  }
+  .hud-cell code {
+    color: var(--t-accent);
+    letter-spacing: -0.05em;
+  }
+  .hud-velbars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 1px;
+    height: 26px;
+    line-height: 1;
+  }
+  .hud-velbars i {
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--t-accent) 70%, transparent);
+    transition: height 0.12s linear, background 0.2s ease;
+    will-change: height;
+  }
+  .hud-velbars i.peak {
+    background: var(--t-accent);
+  }
+  .hud-foot {
+    margin: 0;
+    padding: 0.45rem 0.65rem 0.55rem;
+    border-top: 1px solid var(--t-border);
+    font-size: 0.58rem;
+    color: var(--t-text-muted);
+    text-align: center;
+  }
+
+  /* minimize/position affordances */
+  .hud.dragging {
+    transition: none;
+    cursor: grabbing;
+  }
+
+  @media (max-width: 640px) {
+    .hud {
+      bottom: 5rem; /* clear mobile nav */
+      right: 0.75rem;
+      width: 13rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hud-led {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // ── Activity HUD runtime ───────────────────────────────────────────────
+  const hud = document.querySelector<HTMLElement>('[data-hud]');
+  if (hud) {
+    const $ = (s: string) => hud.querySelector<HTMLElement>(s)!;
+    const uptimeEl = $('[data-hud-uptime]');
+    const sectionEl = $('[data-hud-section]');
+    const keysEl = $('[data-hud-keys]');
+    const scrollEl = $('[data-hud-scroll]');
+    const idleEl = $('[data-hud-idle]');
+    const velWrap = $('[data-hud-vel]'); // .hud-velbars span
+    const grip = $('[data-hud-grip]');
+    const minBtn = $('[data-hud-min]');
+    const closeBtn = $('[data-hud-close]');
+
+    // 14 thin bars, each with a smoothed display height that eases toward its
+    // target each frame — no more 8-quantized glyph snapping.
+    const NBARS = 14;
+    const bars: HTMLElement[] = [];
+    for (let i = 0; i < NBARS; i++) {
+      const b = document.createElement('i');
+      b.style.height = '3px';
+      velWrap.appendChild(b);
+      bars.push(b);
+    }
+
+    const state = {
+      start: Date.now(),
+      keys: 0,
+      scroll: 0,
+      lastActive: Date.now(),
+      vel: 0,
+      velHist: new Array(NBARS).fill(0) as number[],
+      velDisp: new Array(NBARS).fill(0) as number[], // eased display heights
+      lastY: scrollY,
+      lastT: performance.now(),
+      rollingMax: 1,
+    };
+
+    const fmt = (s: number) =>
+      `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+
+    const BAR_MIN = 3;
+    const BAR_MAX = 26;
+    const renderBars = () => {
+      // decay the rolling max slowly so the scale breathes, not snaps
+      state.rollingMax = Math.max(400, state.rollingMax * 0.995);
+      const peak = state.rollingMax;
+      for (let i = 0; i < NBARS; i++) {
+        const target = state.velHist[i];
+        // exponential smoothing toward target
+        state.velDisp[i] += (target - state.velDisp[i]) * 0.18;
+        const norm = Math.min(1, state.velDisp[i] / peak);
+        const h = BAR_MIN + norm * (BAR_MAX - BAR_MIN);
+        bars[i].style.height = h.toFixed(1) + 'px';
+        bars[i].classList.toggle('peak', norm > 0.82);
+      }
+    };
+
+    const tick = () => {
+      // uptime
+      uptimeEl.textContent = fmt(Math.floor((Date.now() - state.start) / 1000));
+      // idle
+      const idle = Math.floor((Date.now() - state.lastActive) / 1000);
+      idleEl.textContent = idle < 60 ? `${idle}s` : `${Math.floor(idle / 60)}m`;
+      // scroll — cap the displayed number past an absurd amount
+      scrollEl.textContent = state.scroll > 500000 ? 'enough' : state.scroll.toLocaleString();
+      // velocity decay + eased sparkline
+      state.vel *= 0.9;
+      renderBars();
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // counters
+    addEventListener(
+      'keydown',
+      () => {
+        state.keys++;
+        keysEl.textContent = state.keys.toLocaleString();
+        state.lastActive = Date.now();
+      },
+      { passive: true }
+    );
+    addEventListener(
+      'scroll',
+      () => {
+        const dy = Math.abs(scrollY - state.lastY);
+        const dt = performance.now() - state.lastT;
+        state.scroll += dy;
+        state.lastY = scrollY;
+        state.lastT = performance.now();
+        if (dt > 0) {
+          const v = (dy / dt) * 1000; // px/s
+          state.vel = Math.max(state.vel, v);
+          state.velHist.push(v);
+          if (state.velHist.length > NBARS) state.velHist.shift();
+          if (v > state.rollingMax) state.rollingMax = v;
+        }
+        state.lastActive = Date.now();
+      },
+      { passive: true }
+    );
+    ['mousemove', 'click', 'touchstart'].forEach((ev) =>
+      addEventListener(ev, () => (state.lastActive = Date.now()), { passive: true })
+    );
+
+    // current section
+    const sections = ['hero', 'about', 'skills', 'projects', 'contact']
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (sections.length) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) sectionEl.textContent = e.target.id;
+          });
+        },
+        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+      );
+      sections.forEach((s) => io.observe(s));
+    }
+
+    // controls
+    minBtn.addEventListener('click', () => {
+      const m = hud.classList.toggle('minimized');
+      minBtn.textContent = m ? '▢' : '_';
+    });
+    closeBtn.addEventListener('click', () => {
+      hud.style.opacity = '0';
+      hud.style.transform = 'translateY(20px) scale(0.9)';
+      setTimeout(() => hud.remove(), 300);
+    });
+
+    // drag on desktop
+    const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (!touch) {
+      let dragging = false;
+      let sx = 0,
+        sy = 0,
+        ox = 0,
+        oy = 0;
+      grip.addEventListener('mousedown', (e) => {
+        dragging = true;
+        hud.classList.add('dragging');
+        const r = hud.getBoundingClientRect();
+        sx = e.clientX;
+        sy = e.clientY;
+        ox = r.left;
+        oy = r.top;
+        hud.style.right = 'auto';
+        hud.style.bottom = 'auto';
+        hud.style.left = ox + 'px';
+        hud.style.top = oy + 'px';
+        e.preventDefault();
+      });
+      addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        const nx = Math.max(8, Math.min(innerWidth - hud.offsetWidth - 8, ox + e.clientX - sx));
+        const ny = Math.max(8, Math.min(innerHeight - hud.offsetHeight - 8, oy + e.clientY - sy));
+        hud.style.left = nx + 'px';
+        hud.style.top = ny + 'px';
+      });
+      addEventListener('mouseup', () => {
+        dragging = false;
+        hud.classList.remove('dragging');
+      });
+    }
+  }
+</script>

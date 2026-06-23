@@ -1,0 +1,151 @@
+---
+/**
+ * LocCounter — live lines-of-code + last-active widget.
+ * Reads /loc-data.json (generated daily by .github/workflows/loc-counter.yml).
+ * Shows an honest "awaiting sync" state until the first Action run lands.
+ * Total count-up shares countUp.ts with the hero "exp" counter.
+ */
+---
+
+<aside class="loc glass" data-loc aria-label="Lines of code statistics">
+  <div class="loc-head">
+    <span class="loc-led" aria-hidden="true"></span>
+    <span class="loc-title">live stats</span>
+  </div>
+  <div id="loc-content">
+    <div class="loc-loading">Loading…</div>
+  </div>
+</aside>
+
+<style>
+  .loc {
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md);
+    display: grid;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+  }
+  .loc-head {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--t-text-muted);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .loc-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--t-accent);
+    box-shadow: 0 0 8px var(--t-accent);
+    animation: loc-pulse 2s ease-in-out infinite;
+  }
+  @keyframes loc-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  .loc-loading { color: var(--t-text-muted); font-size: 0.78rem; }
+  :global(.loc-row) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+  :global(.loc-row .loc-k) {
+    font-size: 0.68rem;
+    color: var(--t-text-muted);
+  }
+  :global(.loc-row .loc-v) {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--t-text);
+    font-variant-numeric: tabular-nums;
+  }
+  :global(.loc-v--accent) { color: var(--t-accent); font-size: 0.85rem; }
+  :global(.loc-spark) {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 28px;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--t-border);
+  }
+  :global(.loc-spark > i) {
+    width: 5px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--t-accent) 60%, transparent);
+    min-height: 3px;
+    transition: background 0.15s ease;
+  }
+  :global(.loc-spark > i:hover) { background: var(--t-accent); }
+  :global(.loc-foot) {
+    font-size: 0.58rem;
+    color: var(--t-text-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .loc-led { animation: none; }
+  }
+</style>
+
+<script>
+  const content = document.getElementById('loc-content');
+
+  const row = (k: string, vHtml: string, vClass = 'loc-v') =>
+    `<div class="loc-row"><span class="loc-k">${k}</span><span class="${vClass}">${vHtml}</span></div>`;
+
+  const sparkline = (history: number[]) =>
+    history
+      .map((val) => {
+        const h = Math.max(3, (val / (Math.max(...history) || 1)) * 26);
+        return `<i style="height:${h}px" title="${val.toLocaleString()}"></i>`;
+      })
+      .join('');
+
+  const renderSeeded = () => {
+    content!.innerHTML =
+      `<div class="loc-row"><span class="loc-k">~/$</span><span class="loc-v" style="color:var(--t-text-muted)">—</span></div>` +
+      `<div class="loc-row"><span class="loc-k">last active</span><span class="loc-v" style="color:var(--t-text-muted);font-size:0.72rem">awaiting sync</span></div>` +
+      `<div class="loc-spark">${Array.from({ length: 30 }, () => '<i style="height:3px"></i>').join('')}</div>` +
+      `<div class="loc-foot">Awaiting first GitHub Actions sync</div>`;
+  };
+
+  const fmtDate = (iso: string) => {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  };
+
+  async function load() {
+    try {
+      const res = await fetch('/loc-data.json');
+      if (!res.ok) throw new Error('not found');
+      const data = await res.json();
+      const real = data.seeded !== true && Number(data.totalLines) > 0;
+      if (!real) {
+        renderSeeded();
+        return;
+      }
+      const total = Number(data.totalLines);
+      const today = Number(data.todayLines || 0);
+      const history: number[] = data.history || [];
+      const spark = history.length
+        ? sparkline(history)
+        : '<div class="loc-foot">No history yet</div>';
+      const totalHtml = `<span data-count-up data-target="${total}">0</span>`;
+      content!.innerHTML =
+        row('~/$ lines', totalHtml) +
+        row('today', '+' + today.toLocaleString(), 'loc-v loc-v--accent') +
+        row('last active', fmtDate(data.updatedAt), 'loc-v" style="font-size:0.72rem') +
+        `<div class="loc-spark">${spark}</div>` +
+        `<div class="loc-foot">updated via GitHub Actions</div>`;
+      // fire the shared count-up on the freshly injected node
+      import('../scripts/countUp').then((m) => m.initCountUp());
+    } catch {
+      renderSeeded();
+    }
+  }
+
+  load();
+</script>

@@ -1,0 +1,109 @@
+---
+/**
+ * Projects — bento grid of curated work.
+ * Featured projects get a 2-col cell. Each card has a generated live-preview
+ * that animates on hover, plus live + repo links.
+ */
+import { portfolio } from '../../data/portfolio';
+import ProjectCard from '../ProjectCard.astro';
+---
+
+<section id="projects" class="projects section" aria-labelledby="projects-title">
+  <div class="section-head" data-reveal>
+    <span class="sec-num">03</span>
+    <h2 id="projects-title" class="sec-title">selected work</h2>
+    <span class="sec-rule"></span>
+  </div>
+
+  <p class="projects-intro" data-reveal data-reveal-delay="0.05">
+    three things I shipped that I'd still put my name on. real systems, real users, real constraints —
+    <span class="projects-note">hover a card to wake its preview.</span>
+  </p>
+
+  <div class="projects-grid" data-reveal-group>
+    {portfolio.projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+  </div>
+
+  <div class="projects-more" data-reveal>
+    <p>more on <a href={portfolio.socials[0]?.href} target="_blank" rel="noopener noreferrer" data-cursor-label="github">github</a> — including the ugly experiments.</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 3rem);
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--t-accent);
+    letter-spacing: 0.1em;
+  }
+  .sec-title {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    margin: 0;
+  }
+  .sec-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--t-border-strong), transparent);
+  }
+
+  .projects-intro {
+    color: var(--t-text-muted);
+    font-size: 0.95rem;
+    max-width: 42rem;
+    margin: 0 0 2.5rem;
+    line-height: 1.6;
+  }
+  .projects-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--t-accent);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 1rem;
+  }
+  .projects-grid :global(.is-featured) {
+    grid-row: span 2;
+  }
+  @media (max-width: 760px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+    .projects-grid :global(.is-featured) {
+      grid-row: span 1;
+    }
+  }
+
+  .projects-more {
+    margin-top: 3rem;
+    text-align: center;
+    color: var(--t-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .projects-more a {
+    color: var(--t-accent);
+    border-bottom: 1px dotted currentColor;
+    padding-bottom: 1px;
+  }
+  .projects-more a:hover {
+    color: var(--t-accent-2);
+  }
+</style>

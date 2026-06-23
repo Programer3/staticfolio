@@ -1,0 +1,158 @@
+---
+/**
+ * SkillCard — tool-wall tile (prev1 style).
+ * Icon tile + name, hover-reveals the "use" line, hover lift + ~12° inner tilt.
+ * NO percentages, NO bars. Click/keyboard opens a small detail modal.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  icon: string;
+  use: string;
+}
+const { name, icon, use } = Astro.props;
+---
+
+<article
+  class="skill-card"
+  data-skill-name={name}
+  data-skill-use={use}
+  tabindex="0"
+  role="button"
+  aria-label={`${name}: ${use}`}
+  data-cursor-label={name.toLowerCase()}
+>
+  <div class="sc-inner" data-sc-tilt>
+    <div class="sc-icon">
+      <Icon slug={icon} size={22} />
+    </div>
+    <h3 class="sc-name">{name}</h3>
+    <p class="sc-use">{use}</p>
+  </div>
+</article>
+
+<style>
+  .skill-card {
+    perspective: 800px;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    background: var(--t-surface);
+    border: 1px solid var(--t-border);
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.3s ease;
+  }
+  .skill-card:hover,
+  .skill-card:focus-visible {
+    border-color: color-mix(in srgb, var(--t-accent) 40%, var(--t-border-strong));
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--t-accent) 22%, transparent),
+      0 14px 36px -22px color-mix(in srgb, var(--t-accent) 80%, transparent);
+  }
+  .sc-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease;
+    /* fixed min-height fits icon + name + 2 use lines → all cards in a row
+       share identical height, so hover never resizes the card or shoves
+       neighbors. */
+    min-height: 7.6rem;
+  }
+  .sc-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: var(--t-accent);
+    background: color-mix(in srgb, var(--t-accent) 10%, transparent);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease;
+  }
+  .skill-card:hover .sc-icon,
+  .skill-card:focus-visible .sc-icon {
+    transform: scale(1.12);
+  }
+  .sc-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--t-text);
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+  .skill-card:hover .sc-name,
+  .skill-card:focus-visible .sc-name {
+    color: var(--t-accent);
+  }
+  /* The use line always occupies its 2-line space; rest state is dim and
+     nudged down, hover brightens + lifts. No max-height toggle → no reflow. */
+  .sc-use {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    line-height: 1.35;
+    color: var(--t-text-muted);
+    margin: 0;
+    min-height: 2.4rem;
+    opacity: 0.32;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .skill-card:hover .sc-use,
+  .skill-card:focus-visible .sc-use {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // ~12° inner-content tilt (prev1 style). Skipped on touch / reduced motion.
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!touch && !reduce) {
+    document.querySelectorAll<HTMLElement>('.skill-card').forEach((card) => {
+      const inner = card.querySelector<HTMLElement>('[data-sc-tilt]');
+      if (!inner) return;
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        inner.style.transform = `rotateX(${-y * 12}deg) rotateY(${x * 12}deg) translateZ(6px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        inner.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+      });
+    });
+  }
+
+  // Detail modal (keyboard + click accessible)
+  document.querySelectorAll<HTMLElement>('.skill-card').forEach((card) => {
+    const open = () => {
+      const name = card.dataset.skillName || '';
+      const use = card.dataset.skillUse || '';
+      const overlay = document.createElement('div');
+      overlay.className = 'skill-modal-overlay';
+      overlay.innerHTML = `
+        <div class="skill-modal glass-strong" role="dialog" aria-modal="true" aria-label="${name}">
+          <button class="skill-modal-x" aria-label="Close">&times;</button>
+          <h3 class="skill-modal-title">${name}</h3>
+          <p class="skill-modal-use">${use}</p>
+        </div>`;
+      const close = () => overlay.remove();
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      overlay.querySelector('.skill-modal-x')!.addEventListener('click', close);
+      document.body.appendChild(overlay);
+      const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } };
+      document.addEventListener('keydown', onKey);
+    };
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+</script>

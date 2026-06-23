@@ -1,0 +1,81 @@
+---
+// SkillCard — Tiltable card with icon + name
+// No progress bars. Hover shows context. Click opens a modal.
+import Icon from "./Icon.astro";
+export interface Props {
+  name: string;
+  icon: string;
+  context: string;
+  why: string;
+  index: number;
+}
+
+const { name, icon, context, why, index } = Astro.props;
+---
+
+<div
+  class="tilt-card paper-card p-4 sm:p-5 cursor-pointer group transition-all duration-300 hover:shadow-card hover:border-primary/30 hover:-translate-y-0.5 skill-card"
+  role="button"
+  tabindex="0"
+  aria-label={`${name}: ${context}`}
+  data-skill-name={name}
+  data-skill-why={why}
+  data-skill-context={context}
+>
+  <div class="flex flex-col items-center gap-2.5 text-center" data-tilt-content="true">
+    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-200">
+      <Icon name={icon} size={20} />
+    </div>
+    <h3 class="font-body font-semibold text-sm text-fg group-hover:text-primary transition-colors">
+      {name}
+    </h3>
+    <p class="micro-label opacity-0 group-hover:opacity-100 transition-opacity duration-200 leading-tight">
+      {context}
+    </p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var cards = document.querySelectorAll(".skill-card");
+
+    cards.forEach(function (card) {
+      var content = card.querySelector("[data-tilt-content]");
+
+      card.addEventListener("mousemove", function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        content.style.transform = "rotateX(" + (-y * 12) + "deg) rotateY(" + (x * 12) + "deg) translateZ(10px)";
+      });
+
+      card.addEventListener("mouseleave", function () {
+        content.style.transform = "rotateX(0) rotateY(0) translateZ(0)";
+      });
+
+      card.addEventListener("click", function () {
+        var name = card.dataset.skillName || "";
+        var why = card.dataset.skillWhy || "";
+        var context = card.dataset.skillContext || "";
+
+        var overlay = document.createElement("div");
+        overlay.className = "fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-scale-in";
+        overlay.onclick = function () { overlay.remove(); };
+
+        var modal = document.createElement("div");
+        modal.className = "glass-panel max-w-md w-full p-6 sm:p-8 relative animate-fade-up";
+        modal.onclick = function (e) { e.stopPropagation(); };
+
+        modal.innerHTML =
+          '<button class="absolute top-4 right-4 text-fg-muted hover:text-fg text-2xl transition-colors" aria-label="Close">&times;</button>' +
+          '<h3 class="font-display text-2xl font-bold text-fg mb-2">' + name + '</h3>' +
+          '<p class="micro-label mb-4">' + context + '</p>' +
+          '<p class="font-body text-fg-muted leading-relaxed">' + why + '</p>';
+
+        modal.querySelector("button").onclick = function () { overlay.remove(); };
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+      });
+    });
+  });
+</script>

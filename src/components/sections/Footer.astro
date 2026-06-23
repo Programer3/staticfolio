@@ -1,0 +1,147 @@
+---
+/**
+ * Footer — compact. ASCII art, hidden references, build credit.
+ * Easter eggs: the ASCII + a "view source" hint + built-with line.
+ */
+import { portfolio } from '../../data/portfolio';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer" aria-labelledby="footer-title">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="fc">
+        <h2 id="footer-title" class="fc-title">{portfolio.name}</h2>
+        <p class="fc-role">{portfolio.role}</p>
+        <p class="fc-loc">{portfolio.location}</p>
+      </div>
+
+      <nav class="fc" aria-label="Footer">
+        <p class="fc-h">elsewhere</p>
+        <ul class="fc-links">
+          {
+            portfolio.socials.map((s) => (
+              <li>
+                <a href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" data-cursor-label={s.label.toLowerCase()}>
+                  {s.label} <span aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="fc">
+        <p class="fc-h">navigate</p>
+        <ul class="fc-links">
+          <li><a href="#about" data-cursor-label="about">about</a></li>
+          <li><a href="#skills" data-cursor-label="skills">skills</a></li>
+          <li><a href="#projects" data-cursor-label="work">work</a></li>
+          <li><a href="#contact" data-cursor-label="contact">contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <p class="built-with">
+        built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" data-cursor-label="astro">astro</a> ·
+        <a href="https://gsap.com" target="_blank" rel="noopener noreferrer" data-cursor-label="gsap">gsap</a> ·
+        <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" data-cursor-label="tw">tailwind</a>
+        <span class="dot">·</span>
+        <span class="hint">try the konami code ↑↑↓↓←→←→ba</span>
+      </p>
+      <p class="copyright">© {year} {portfolio.name} · <a href="#top" data-cursor-label="top">back to top ↑</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    background: transparent;
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 3rem) 2rem;
+    overflow: hidden;
+  }
+  .footer-inner {
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 640px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+    }
+  }
+
+  .fc-title {
+    font-size: 1.3rem;
+    margin: 0 0 0.4rem;
+  }
+  .fc-role,
+  .fc-loc {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--t-text-muted);
+    margin: 0.15rem 0;
+  }
+  .fc-h {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--t-accent);
+    margin: 0 0 0.9rem;
+  }
+  .fc-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .fc-links a {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--t-text-muted);
+    transition: color 0.2s ease;
+  }
+  .fc-links a:hover {
+    color: var(--t-accent);
+  }
+
+  .footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--t-border);
+  }
+  .built-with,
+  .copyright {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--t-text-muted);
+    margin: 0;
+  }
+  .built-with a {
+    color: var(--t-accent);
+  }
+  .dot { margin: 0 0.4rem; opacity: 0.5; }
+  .hint {
+    opacity: 0.55;
+    font-style: italic;
+  }
+  .copyright a {
+    color: var(--t-accent);
+  }
+</style>

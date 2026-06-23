@@ -1,0 +1,236 @@
+@import "tailwindcss";
+@import "./themes.css";
+
+/* ===== Tailwind v4 Theme Tokens ===== */
+@theme inline {
+  --color-bg: var(--theme-bg);
+  --color-bg-alt: var(--theme-bg-alt);
+  --color-fg: var(--theme-fg);
+  --color-fg-muted: var(--theme-fg-muted);
+  --color-card-bg: var(--theme-card);
+  --color-card-border: var(--theme-card-border);
+  --color-primary: var(--theme-primary);
+  --color-primary-hover: var(--theme-primary-hover);
+  --color-accent: var(--theme-accent);
+  --color-accent-hover: var(--theme-accent-hover);
+  --color-destructive: var(--theme-destructive);
+  --color-muted: var(--theme-muted);
+  --color-ring: var(--theme-ring);
+  --color-grid-line: var(--theme-grid);
+  --color-noise: var(--theme-noise);
+
+  --font-display: var(--theme-font-display);
+  --font-body: var(--theme-font-body);
+  --font-code: var(--theme-font-code);
+
+  --shadow-card: var(--theme-shadow);
+  --shadow-glow: var(--theme-glow);
+
+  --animate-fade-up: fade-up 0.6s ease-out forwards;
+  --animate-scale-in: scale-in 0.4s ease-out forwards;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+}
+
+/* ===== Base Styles ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
+  font-family: var(--theme-font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--theme-accent);
+  color: var(--theme-bg);
+}
+
+/* ===== Focus Rings (accessible) ===== */
+*:focus-visible {
+  outline: 3px solid var(--theme-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-fg-muted);
+}
+
+/* ===== Utility Classes ===== */
+.planner-bg {
+  background-color: var(--theme-bg);
+  position: relative;
+}
+
+.glass-panel {
+  background: var(--theme-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--theme-card-border);
+  border-radius: 16px;
+  box-shadow: var(--theme-shadow);
+}
+
+.paper-card {
+  background: var(--theme-card);
+  border: 1px solid var(--theme-card-border);
+  border-radius: 16px;
+  box-shadow: var(--theme-shadow);
+}
+
+.micro-label {
+  font-family: var(--theme-font-code);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--theme-fg-muted);
+}
+
+.tag-capsule {
+  font-family: var(--theme-font-code);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--theme-fg-muted);
+  background: var(--theme-muted-solid, color-mix(in srgb, var(--theme-fg-muted) 14%, transparent));
+  border: 1px solid var(--theme-card-border);
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+}
+
+.command-strip {
+  background: linear-gradient(
+    135deg,
+    var(--theme-primary) 0%,
+    var(--theme-accent) 100%
+  );
+  color: var(--theme-bg);
+}
+
+/* ===== Grain/Noise Overlay ===== */
+.grain-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ===== Dotted Grid ===== */
+.dotted-grid {
+  background-image: radial-gradient(circle, var(--theme-grid) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+  background-position: -1px -1px;
+}
+
+/* ===== Blueprint Grid (engineering lines) ===== */
+.blueprint-grid {
+  background-image:
+    linear-gradient(var(--theme-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--theme-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ===== Typography helpers ===== */
+.font-display {
+  font-family: var(--theme-font-display);
+}
+
+.font-code {
+  font-family: var(--theme-font-code);
+}
+
+/* ===== CRT Scanline (for Terminal theme) ===== */
+.crt-scanlines::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+
+/* ===== Theme transition ===== */
+.theme-transitioning,
+.theme-transitioning * {
+  transition: background-color 0.4s ease,
+              color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease !important;
+}
+
+/* ===== Animations ===== */
+.stagger-fade-in > * {
+  opacity: 0;
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.stagger-fade-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-fade-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-fade-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-fade-in > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-fade-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-fade-in > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-fade-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-fade-in > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-fade-in > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-fade-in > *:nth-child(10) { animation-delay: 0.5s; }
+
+/* ===== Skill card tilt perspective ===== */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+}

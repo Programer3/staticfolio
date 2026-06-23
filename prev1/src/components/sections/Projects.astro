@@ -1,0 +1,97 @@
+---
+// Projects Section — "The Portfolio Vault"
+import ProjectCard from "../ui/ProjectCard.astro";
+import { projects, categories } from "../../lib/data/projects";
+---
+
+<section
+  id="projects"
+  class="py-20 sm:py-28 relative z-10 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-[1200px] mx-auto">
+    <div class="mb-12">
+      <span class="micro-label text-accent">// 02</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-fg mt-2 tracking-tighter">
+        Portfolio Vault
+      </h2>
+      <p class="font-body text-fg-muted mt-3 max-w-xl leading-relaxed">
+        Real projects, real problems solved. Each one taught me something.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-8" id="filter-bar" role="tablist" aria-label="Filter projects by category">
+      {categories.map((cat) => (
+        <button
+          class="filter-btn px-4 py-1.5 rounded-full text-xs font-code tracking-wider transition-all duration-200 data-[active=true]:bg-primary data-[active=true]:text-[var(--theme-bg)] data-[active=false]:bg-muted/30 data-[active=false]:text-fg-muted hover:text-fg"
+          data-category={cat}
+          data-active={cat === "all" ? "true" : "false"}
+          role="tab"
+          aria-selected={cat === "all" ? "true" : "false"}
+          aria-label={`Show ${cat} projects`}
+        >
+          {cat === "all" ? "All" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+        </button>
+      ))}
+    </div>
+
+    <div
+      id="projects-grid"
+      class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+    >
+      {projects.map((project, i) => (
+        <div class="project-item" data-category={project.category}>
+          <ProjectCard
+            title={project.title}
+            description={project.description}
+            tech={project.tech}
+            github={project.github}
+            demo={project.demo}
+            image={project.image}
+            highlights={project.highlights}
+            index={i}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  var filterButtons = document.querySelectorAll(".filter-btn");
+  var projectItems = document.querySelectorAll(".project-item");
+
+  filterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var category = btn.dataset.category;
+      if (!category) return;
+
+      filterButtons.forEach(function (b) {
+        b.dataset.active = "false";
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.dataset.active = "true";
+      btn.setAttribute("aria-selected", "true");
+
+      projectItems.forEach(function (item) {
+        var itemCat = item.dataset.category;
+        var match = category === "all" || itemCat === category;
+
+        if (match) {
+          item.style.display = "";
+          item.style.opacity = "0";
+          item.style.transform = "translateY(10px)";
+          requestAnimationFrame(function () {
+            item.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            item.style.opacity = "1";
+            item.style.transform = "translateY(0)";
+          });
+        } else {
+          item.style.transition = "opacity 0.2s ease, transform 0.2s ease";
+          item.style.opacity = "0";
+          item.style.transform = "translateY(10px)";
+          setTimeout(function () { item.style.display = "none"; }, 200);
+        }
+      });
+    });
+  });
+</script>

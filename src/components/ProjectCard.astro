@@ -1,0 +1,229 @@
+---
+/**
+ * ProjectCard — a bento cell for a single project.
+ * - Generated SVG preview (ProjectPreview) that animates on hover.
+ * - Title, year, tagline, tech chips, live + repo links.
+ * - `featured` projects span 2 columns on wider grids.
+ */
+import type { Project } from '../data/portfolio';
+import ProjectPreview from './ProjectPreview.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+const { project, index } = Astro.props;
+const cls = ['project-card', project.featured ? 'is-featured' : ''].filter(Boolean).join(' ');
+---
+
+<article
+  class={cls}
+  data-cursor-label={project.title.toLowerCase()}
+  style={`--p-accent:${project.accent}`}
+>
+  <div class="pc-media">
+    <ProjectPreview motif={project.motif} accent={project.accent} title={project.title} />
+  </div>
+
+  <div class="pc-body" data-pc-tilt>
+    <header class="pc-head">
+      <h3 class="pc-title">{project.title}</h3>
+      <span class="pc-year">{project.year}</span>
+    </header>
+
+    <p class="pc-tagline">{project.tagline}</p>
+    <p class="pc-desc clamp-3">{project.description}</p>
+
+    <ul class="pc-stack" aria-label="Tech stack">
+      {project.stack.map((s) => <li class="pc-chip">{s}</li>)}
+    </ul>
+
+    <footer class="pc-links">
+      {project.live && (
+        <a
+          href={project.live}
+          class="pc-link pc-link--primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor-label="open"
+          aria-label={`Open ${project.title} live`}
+        >
+          <Icon slug="external" size={14} />
+          live
+        </a>
+      )}
+      {project.repo && (
+        <a
+          href={project.repo}
+          class="pc-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor-label="code"
+          aria-label={`View ${project.title} source`}
+        >
+          <Icon slug="github" size={14} />
+          repo
+        </a>
+      )}
+    </footer>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 0.9rem;
+    border-radius: var(--radius-lg);
+    background: var(--t-surface);
+    border: 1px solid var(--t-border);
+    overflow: hidden;
+    height: 100%;
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.3s ease;
+    will-change: transform;
+    perspective: 800px;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--p-accent) 14%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: color-mix(in srgb, var(--p-accent) 40%, var(--t-border-strong));
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--p-accent) 25%, transparent),
+      0 24px 60px -30px color-mix(in srgb, var(--p-accent) 70%, transparent);
+  }
+  .project-card:hover::before,
+  .project-card:focus-within::before {
+    opacity: 1;
+  }
+
+  .pc-media {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .pc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease;
+  }
+  .pc-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .pc-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .pc-year {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--t-text-muted);
+  }
+  .pc-tagline {
+    font-size: 0.88rem;
+    color: var(--t-text);
+    line-height: 1.4;
+  }
+  .pc-desc {
+    font-size: 0.8rem;
+    color: var(--t-text-muted);
+    line-height: 1.5;
+  }
+
+  .pc-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.15rem 0 0;
+  }
+  .pc-chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: var(--t-surface-muted);
+    border: 1px solid var(--t-border);
+    color: var(--t-text-muted);
+  }
+
+  .pc-links {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .pc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--t-text-muted);
+    border: 1px solid var(--t-border);
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .pc-link:hover {
+    color: var(--t-text);
+    border-color: var(--t-border-strong);
+    background: var(--t-surface);
+  }
+  .pc-link--primary {
+    color: var(--p-accent);
+    border-color: color-mix(in srgb, var(--p-accent) 40%, var(--t-border));
+  }
+  .pc-link--primary:hover {
+    background: color-mix(in srgb, var(--p-accent) 12%, transparent);
+  }
+</style>
+
+<script>
+  // Inner-body tilt (~6°) — the card itself lifts on hover; only its body
+  // tilts toward the pointer, like prev1's project cards. Skipped on touch.
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!touch && !reduce) {
+    document.querySelectorAll<HTMLElement>('.project-card').forEach((card) => {
+      const body = card.querySelector<HTMLElement>('[data-pc-tilt]');
+      if (!body) return;
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        body.style.transform = `rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        body.style.transform = 'rotateX(0) rotateY(0)';
+      });
+    });
+  }
+</script>

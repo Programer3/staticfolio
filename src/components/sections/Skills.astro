@@ -1,0 +1,116 @@
+---
+/**
+ * Skills — tool wall, standard grid (prev1 style).
+ * ~20 curated skills as cards. NO percentages, NO bars.
+ * Each card: icon + name, hover-reveals a "use" line, click opens a detail.
+ */
+import { portfolio } from '../../data/portfolio';
+import SkillCard from '../SkillCard.astro';
+---
+
+<section id="skills" class="skills section" aria-labelledby="skills-title">
+  <div class="section-head" data-reveal>
+    <span class="sec-num">02</span>
+    <h2 id="skills-title" class="sec-title">the toolkit</h2>
+    <span class="sec-rule"></span>
+  </div>
+
+  <p class="skills-intro" data-reveal data-reveal-delay="0.05">
+    twenty tools I actually reach for — not a heatmap of everything I've ever touched.
+    <span class="skills-note">hover any to see what I use it <em>for</em>.</span>
+  </p>
+
+  <div class="skills-grid" data-reveal-group>
+    {portfolio.skills.map((s) => <SkillCard name={s.name} icon={s.icon} use={s.use} />)}
+  </div>
+
+  <p class="skills-foot" data-reveal>
+    <span aria-hidden="true">◓</span>
+    jack of all trades, master of none — but better than a master of one.
+  </p>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 3rem);
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--t-accent);
+    letter-spacing: 0.1em;
+  }
+  .sec-title {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    margin: 0;
+  }
+  .sec-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--t-border-strong), transparent);
+  }
+
+  .skills-intro {
+    color: var(--t-text-muted);
+    font-size: 0.95rem;
+    max-width: 40rem;
+    margin: 0 0 2.5rem;
+    line-height: 1.6;
+  }
+  .skills-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--t-accent);
+  }
+  .skills-note em { font-style: normal; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  @media (min-width: 480px) {
+    .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 760px) {
+    .skills-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (min-width: 1080px) {
+    .skills-grid { grid-template-columns: repeat(5, 1fr); }
+  }
+
+  .skills-foot {
+    margin: 2.5rem 0 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--t-text-muted);
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .skills-foot span {
+    color: var(--t-accent);
+    animation: rotate-slow 8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes rotate-slow {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skills-foot span { animation: none; }
+  }
+</style>

@@ -1,0 +1,335 @@
+---
+/**
+ * Hero — above-the-fold value proposition.
+ * One sharp line, no fluff. Parallax SVG backdrop, staggered GSAP reveal.
+ */
+import { portfolio } from '../../data/portfolio';
+import MagneticButton from '../MagneticButton.astro';
+import Icon from '../Icon.astro';
+---
+
+<section id="hero" class="hero" aria-labelledby="hero-title">
+  <!-- ambient orbs (grid is a shared fixed layer in Base.astro) -->
+  <div class="hero-bg" aria-hidden="true">
+    <!-- floating accent orbs -->
+    <span class="orb orb-1 float-y" data-parallax="0.25"></span>
+    <span class="orb orb-2 float-y" data-parallax="0.4" style="animation-delay:-2s"></span>
+    <span class="orb orb-3 float-y" data-parallax="0.15" style="animation-delay:-4s"></span>
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-kicker" data-reveal>
+      <Icon slug="sparkles" size={14} />
+      {portfolio.availability}
+    </p>
+
+    <h1 id="hero-title" class="hero-title" data-reveal data-reveal-delay="0.05">
+      <span class="line">I build interfaces that feel <span class="word-scramble" data-scramble="weird">weird</span> — fast, <span class="word-breathe">alive</span>, and deliberate.</span>
+    </h1>
+
+    <p class="hero-sub" data-reveal data-reveal-delay="0.1">
+      {portfolio.heroSub.map((line) => <span class="hero-sub-line">{line}</span>)}
+    </p>
+
+    <div class="hero-cta" data-reveal data-reveal-delay="0.15">
+      <MagneticButton href="#projects" variant="primary" size="lg" label="see the work" iconRight="arrow" cursorLabel="work" />
+      <MagneticButton href="#contact" variant="outline" size="lg" label="get in touch" cursorLabel="contact" />
+    </div>
+
+    <dl class="hero-meta" data-reveal data-reveal-delay="0.2">
+      <div class="hm">
+        <dt>name</dt>
+        <dd>{portfolio.name}</dd>
+      </div>
+      <div class="hm">
+        <dt>based</dt>
+        <dd>{portfolio.location}</dd>
+      </div>
+      <div class="hm">
+        <dt>exp</dt>
+        <dd><span data-count-up data-target={portfolio.experienceYears} data-ease="expoback" data-visibility="1">0</span>+ yrs</dd>
+      </div>
+    </dl>
+  </div>
+
+  <a href="#about" class="hero-scroll" data-cursor-label="scroll" aria-label="Scroll to about">
+    <span class="scroll-mouse"><span class="scroll-wheel"></span></span>
+    <span class="scroll-text">scroll</span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 8rem 1.5rem 6rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+  }
+  .orb-1 {
+    width: 380px; height: 380px;
+    top: 8%; left: -6%;
+    background: var(--t-accent);
+  }
+  .orb-2 {
+    width: 280px; height: 280px;
+    bottom: 6%; right: -4%;
+    background: var(--t-accent-2);
+    opacity: 0.35;
+  }
+  .orb-3 {
+    width: 200px; height: 200px;
+    top: 50%; right: 30%;
+    background: var(--t-accent);
+    opacity: 0.2;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 64rem;
+    width: 100%;
+    text-align: center;
+  }
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--t-surface);
+    border: 1px solid var(--t-border);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--t-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .hero-kicker :global(svg) {
+    color: var(--t-accent);
+  }
+  .hero-title {
+    font-size: clamp(2.4rem, 7vw + 1rem, 6rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0 0 1.5rem;
+  }
+  .hero-title .line {
+    display: block;
+  }
+  /* gradient a few words via the accent — applied through a span in the proposition? */
+  .hero-title :global(.accent) {
+    background: linear-gradient(120deg, var(--t-accent), var(--t-accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-sub {
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
+    margin: 0 auto 2.2rem;
+    max-width: 38rem;
+  }
+  .hero-sub-line {
+    font-size: clamp(0.95rem, 1.2vw + 0.6rem, 1.15rem);
+    color: var(--t-text-muted);
+    line-height: 1.5;
+    font-family: var(--font-mono);
+  }
+  .hero-sub-line::before {
+    content: '> ';
+    color: var(--t-accent);
+    opacity: 0.6;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 2rem;
+    margin: 0 0 2rem;
+  }
+  .hm {
+    text-align: center;
+  }
+  .hm dt {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--t-text-muted);
+    margin-bottom: 0.2rem;
+  }
+  .hm dd {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--t-text);
+  }
+
+  /* scroll cue */
+  .hero-scroll {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    color: var(--t-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    z-index: 1;
+  }
+  .scroll-mouse {
+    width: 22px;
+    height: 34px;
+    border: 1.5px solid var(--t-border-strong);
+    border-radius: 12px;
+    display: grid;
+    place-items: start center;
+    padding-top: 6px;
+  }
+  .scroll-wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--t-accent);
+    border-radius: 2px;
+    animation: scroll-wheel 1.8s ease-in-out infinite;
+  }
+  @keyframes scroll-wheel {
+    0% { opacity: 0; transform: translateY(0); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(12px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-wheel { animation: none; opacity: 1; }
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding-top: 7rem; }
+    .hero-meta { gap: 0.8rem 1.5rem; }
+  }
+
+  /* "weird" — character scramble resolves back to the original word.
+     Width is locked to the original text so swapping glyphs (which differ in
+     width across sans/mono fonts) can't reflow the title. */
+  .word-scramble {
+    color: var(--t-accent);
+    cursor: default;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* "alive" — a gentle breathe: scale + soft accent glow. Transform/shadow
+     only, so it never reflows on any font. */
+  .word-breathe {
+    color: var(--t-accent-2);
+    cursor: default;
+    display: inline-block;
+    transform-origin: center;
+    text-shadow: 0 0 0 transparent;
+    transition: text-shadow 0.4s ease;
+  }
+  .word-breathe:hover {
+    animation: alive-breathe 1.4s ease-in-out infinite;
+  }
+  @keyframes alive-breathe {
+    0%, 100% {
+      transform: scale(1);
+      text-shadow: 0 0 0 color-mix(in srgb, var(--t-accent-2) 0%, transparent);
+    }
+    50% {
+      transform: scale(1.05);
+      text-shadow: 0 0 14px color-mix(in srgb, var(--t-accent-2) 50%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .word-breathe:hover { animation: none; }
+  }
+</style>
+
+<script>
+  // count-up (exp counter) + "alive" scramble on hover. Both lightweight,
+  // short, and resolve smoothly. Skipped under reduced motion.
+  import { initCountUp } from '../../scripts/countUp';
+  initCountUp();
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    const GLYPHS = '!<>-_\\/[]{}=+*^?#01abcdef';
+    document.querySelectorAll<HTMLElement>('[data-scramble]').forEach((el) => {
+      const original = el.dataset.scramble || el.textContent || '';
+      let raf = 0;
+
+      // Lock the span width to the original word so glyph swaps during the
+      // scramble can't reflow the title — fixes sans fonts (claude/panda)
+      // where glyph widths differ from the original letters.
+      const lockWidth = () => {
+        el.textContent = original;
+        const w = el.getBoundingClientRect().width;
+        if (w > 0) el.style.minWidth = w + 'px';
+      };
+      lockWidth();
+      let resizeTimer = 0;
+      addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+          el.style.minWidth = '';
+          lockWidth();
+        }, 200);
+      }, { passive: true });
+
+      const run = () => {
+        cancelAnimationFrame(raf);
+        const start = performance.now();
+        const dur = 380;
+        const step = (t: number) => {
+          const p = Math.min((t - start) / dur, 1);
+          const revealed = Math.floor(p * original.length);
+          let out = '';
+          for (let i = 0; i < original.length; i++) {
+            out += i < revealed
+              ? original[i]
+              : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          }
+          el.textContent = out;
+          if (p < 1) raf = requestAnimationFrame(step);
+          else el.textContent = original;
+        };
+        raf = requestAnimationFrame(step);
+      };
+      el.addEventListener('mouseenter', run);
+      el.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(raf);
+        el.textContent = original;
+      });
+    });
+  }
+</script>

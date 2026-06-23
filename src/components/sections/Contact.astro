@@ -1,0 +1,380 @@
+---
+/**
+ * Contact — glassy form with custom inline validation.
+ * Static-safe: posts to portfolio.contactEndpoint if set, else falls back to
+ * a mailto: link built from the validated fields. No backend required.
+ */
+import { portfolio } from '../../data/portfolio';
+import Icon from '../Icon.astro';
+
+const hasEndpoint = Boolean(portfolio.contactEndpoint);
+---
+
+<section id="contact" class="contact section" aria-labelledby="contact-title">
+  <div class="section-head" data-reveal>
+    <span class="sec-num">04</span>
+    <h2 id="contact-title" class="sec-title">say hello</h2>
+    <span class="sec-rule"></span>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-copy" data-reveal data-reveal-delay="0.05">
+      <p class="contact-lead">
+        the fastest way to my inbox.
+        <br />
+        no <em>thoughts &amp; prayers</em> forms, no recruiter funnels — just you, me, and a reply within a day or two.
+      </p>
+
+      <ul class="contact-channels" aria-label="Direct contact channels">
+        <li>
+          <a href={`mailto:${portfolio.email}`} data-cursor-label="email" class="channel">
+            <Icon slug="mail" size={18} />
+            <span>
+              <small>email</small>
+              {portfolio.email}
+            </span>
+          </a>
+        </li>
+        {
+          portfolio.socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="noopener noreferrer" data-cursor-label={s.label} class="channel">
+                <Icon slug={s.icon} size={18} />
+                <span>
+                  <small>{s.label}</small>
+                  {s.href.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <form
+      class="contact-form glass-strong"
+      data-reveal
+      data-reveal-delay="0.1"
+      data-contact-form
+      method={hasEndpoint ? 'POST' : undefined}
+      action={hasEndpoint ? portfolio.contactEndpoint : undefined}
+      novalidate
+    >
+      <div class="field">
+        <label for="cf-name">name</label>
+        <input
+          id="cf-name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          minlength="2"
+          data-error="what should I call you?"
+          placeholder="your name"
+        />
+        <small class="field-err" data-err-for="cf-name"></small>
+      </div>
+
+      <div class="field">
+        <label for="cf-email">email</label>
+        <input
+          id="cf-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          data-error="a valid email so I can reply"
+          placeholder="you@domain.com"
+        />
+        <small class="field-err" data-err-for="cf-email"></small>
+      </div>
+
+      <div class="field">
+        <label for="cf-msg">message</label>
+        <textarea
+          id="cf-msg"
+          name="message"
+          rows="4"
+          required
+          minlength="10"
+          data-error="give me at least a sentence to go on"
+          placeholder="what are you building? what do you need?"
+        ></textarea>
+        <small class="field-err" data-err-for="cf-msg"></small>
+        <div class="field-meta">
+          <span data-counter>0</span> chars · <span data-min>min 10</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit magnetic mb mb--primary mb--lg" data-magnetic data-cursor-label="send" data-send-btn>
+          <span class="mb-inner" data-send-inner>send it <Icon slug="arrow" size={16} class="mb-icon" /></span>
+          <i class="mb-ripple" aria-hidden="true"></i>
+        </button>
+        <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+      </div>
+
+      <noscript>
+        <p class="noscript-note">
+          this form needs JS for inline validation. without it, email me directly at{' '}
+          <a href={`mailto:${portfolio.email}`}>{portfolio.email}</a>.
+        </p>
+      </noscript>
+    </form>
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 3rem);
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--t-accent);
+    letter-spacing: 0.1em;
+  }
+  .sec-title {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    margin: 0;
+  }
+  .sec-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--t-border-strong), transparent);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  .contact-lead {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--t-text);
+    margin: 0 0 2rem;
+  }
+  .contact-lead em { font-style: normal; color: var(--t-accent); }
+
+  .contact-channels {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--t-surface);
+    border: 1px solid var(--t-border);
+    color: var(--t-text);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .channel:hover {
+    border-color: var(--t-border-strong);
+    transform: translateY(-1px);
+  }
+  .channel :global(svg) { color: var(--t-accent); flex-shrink: 0; }
+  .channel span { display: grid; gap: 0.1rem; }
+  .channel small {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--t-text-muted);
+  }
+
+  /* form */
+  .contact-form {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    display: grid;
+    gap: 1.1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    color: var(--t-text-muted);
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    background: var(--t-bg);
+    border: 1px solid var(--t-border);
+    border-radius: 10px;
+    color: var(--t-text);
+    font: inherit;
+    font-size: 0.92rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    resize: vertical;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--t-text-muted);
+    opacity: 0.6;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--t-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--t-accent) 18%, transparent);
+  }
+  .field.invalid input,
+  .field.invalid textarea {
+    border-color: #f87171;
+  }
+  .field-err {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: #f87171;
+    min-height: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .field.invalid .field-err { opacity: 1; }
+  .field-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--t-text-muted);
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .form-status {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--t-text-muted);
+  }
+  .form-status.ok { color: #34d399; }
+  .form-status.err { color: #f87171; }
+
+  .noscript-note {
+    font-size: 0.8rem;
+    color: var(--t-text-muted);
+  }
+</style>
+
+<script>
+  // ── Contact form: inline validation + endpoint/mailto dispatch ─────────
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+    const counter = form.querySelector<HTMLElement>('[data-counter]')!;
+    const textarea = form.querySelector<HTMLTextAreaElement>('#cf-msg')!;
+    const endpoint = form.getAttribute('action');
+    const sendBtn = form.querySelector<HTMLButtonElement>('[data-send-btn]')!;
+    const sendInner = form.querySelector<HTMLElement>('[data-send-inner]')!;
+
+    // Tactile success: punch + ripple + "sent ✓" label swap. Fires only on a
+    // valid submit; the invalid branch returns early before this is called.
+    let sentTimer = 0;
+    const fireSuccess = () => {
+      sendBtn.classList.remove('is-sent');
+      void sendBtn.offsetWidth; // restart the keyframes
+      sendBtn.classList.add('is-sent');
+      const prev = sendInner.innerHTML;
+      sendInner.textContent = 'sent ✓';
+      clearTimeout(sentTimer);
+      sentTimer = window.setTimeout(() => {
+        sendBtn.classList.remove('is-sent');
+        sendInner.innerHTML = prev;
+      }, 1400);
+    };
+
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const validateField = (el: HTMLInputElement | HTMLTextAreaElement) => {
+      const field = el.closest('.field') as HTMLElement;
+      const err = field.querySelector<HTMLElement>('.field-err')!;
+      let msg = '';
+      const v = el.value.trim();
+      if (el.hasAttribute('required') && !v) msg = el.dataset.error || 'required';
+      else if (v && el.type === 'email' && !emailRe.test(v))
+        msg = el.dataset.error || 'invalid email';
+      else if (v && el.hasAttribute('minlength') && v.length < Number(el.getAttribute('minlength')))
+        msg = el.dataset.error || `min ${el.getAttribute('minlength')} chars`;
+      field.classList.toggle('invalid', Boolean(msg));
+      err.textContent = msg;
+      return !msg;
+    };
+
+    const fields = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')
+    );
+
+    // live validation on blur + counter
+    fields.forEach((f) =>
+      f.addEventListener('blur', () => validateField(f))
+    );
+    textarea.addEventListener('input', () => {
+      counter.textContent = String(textarea.value.length);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      // validate all
+      const ok = fields.map(validateField).every(Boolean);
+      if (!ok) {
+        e.preventDefault();
+        status.textContent = '× check the fields above';
+        status.className = 'form-status err';
+        const firstBad = form.querySelector<HTMLElement>('.invalid input, .invalid textarea');
+        firstBad?.focus();
+        return;
+      }
+
+      // if no endpoint, build a mailto fallback
+      if (!endpoint) {
+        e.preventDefault();
+        const data = new FormData(form);
+        const name = String(data.get('name') || '');
+        const email = String(data.get('email') || '');
+        const msg = String(data.get('message') || '');
+        const subject = encodeURIComponent(`portfolio message from ${name}`);
+        const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+        fireSuccess();
+        // build directly against the known email
+        window.location.href = `mailto:${(window as any).__folioEmail || 'hello@example.com'}?subject=${subject}&body=${body}`;
+        status.textContent = '✓ opening your mail client…';
+        status.className = 'form-status ok';
+        return;
+      }
+
+      // endpoint path: let the browser submit, but show optimistic status
+      fireSuccess();
+      status.textContent = '→ sending…';
+      status.className = 'form-status';
+      // (the form will navigate away on success to the endpoint's thank-you page)
+    });
+  }
+</script>

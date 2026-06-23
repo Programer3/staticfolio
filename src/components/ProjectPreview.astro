@@ -1,0 +1,224 @@
+---
+/**
+ * ProjectPreview — generated SVG visual that comes alive on hover.
+ * No external image assets. Each `motif` is a small parametric SVG scene
+ * tinted with the project's accent. Animations are pure SMIL/CSS, paused
+ * until the card is hovered (saves CPU + respects reduced-motion).
+ */
+interface Props {
+  motif: 'orbit' | 'grid' | 'wave' | 'circuit' | 'prism' | 'glyph' | 'stack' | 'pulse';
+  accent: string;
+  title: string;
+}
+const { motif, accent, title } = Astro.props;
+const uid = `pv-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="preview" aria-hidden="true">
+  {motif === 'orbit' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <circle cx="200" cy="120" r="30" fill={accent} opacity="0.9" />
+      <g style={`--uid:${uid}`} class="pv-orbit">
+        <ellipse cx="200" cy="120" rx="120" ry="44" fill="none" stroke={accent} stroke-width="1" opacity="0.4" />
+        <ellipse cx="200" cy="120" rx="80" ry="80" fill="none" stroke={accent} stroke-width="1" opacity="0.25" transform="rotate(30 200 120)" />
+        <circle cx="320" cy="120" r="8" fill={accent} />
+        <circle cx="120" cy="150" r="5" fill={accent} opacity="0.7" />
+      </g>
+    </svg>
+  )}
+  {motif === 'grid' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <defs>
+        <pattern id={`${uid}-g`} width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M20 0H0V20" fill="none" stroke={accent} stroke-width="0.5" opacity="0.3" />
+        </pattern>
+      </defs>
+      <rect width="400" height="240" fill={`url(#${uid}-g)`} />
+      <g class="pv-grid">
+        <rect x="60" y="60" width="60" height="40" fill={accent} opacity="0.8" rx="4" />
+        <rect x="140" y="90" width="60" height="50" fill={accent} opacity="0.6" rx="4" />
+        <rect x="220" y="50" width="60" height="60" fill={accent} opacity="0.7" rx="4" />
+        <rect x="300" y="110" width="50" height="30" fill={accent} opacity="0.5" rx="4" />
+      </g>
+    </svg>
+  )}
+  {motif === 'wave' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-wave">
+        <path d="M0 120 Q50 60 100 120 T200 120 T300 120 T400 120" fill="none" stroke={accent} stroke-width="2" />
+        <path d="M0 140 Q50 90 100 140 T200 140 T300 140 T400 140" fill="none" stroke={accent} stroke-width="2" opacity="0.6" />
+        <path d="M0 100 Q50 40 100 100 T200 100 T300 100 T400 100" fill="none" stroke={accent} stroke-width="2" opacity="0.4" />
+      </g>
+    </svg>
+  )}
+  {motif === 'circuit' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-circuit" stroke={accent} stroke-width="1" fill="none">
+        <path d="M40 120 H120 V60 H200 V140 H280 V80 H360" opacity="0.7" />
+        <path d="M40 180 H100 V120 H180 V200 H260 V140 H340" opacity="0.5" />
+        <circle cx="120" cy="60" r="4" fill={accent} />
+        <circle cx="200" cy="140" r="4" fill={accent} />
+        <circle cx="280" cy="80" r="4" fill={accent} />
+        <circle cx="180" cy="200" r="4" fill={accent} />
+      </g>
+    </svg>
+  )}
+  {motif === 'prism' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-prism">
+        <polygon points="200,40 320,200 80,200" fill={accent} opacity="0.25" />
+        <polygon points="200,40 320,200 80,200" fill="none" stroke={accent} stroke-width="1.5" />
+        <line x1="200" y1="40" x2="200" y2="200" stroke={accent} stroke-width="1" opacity="0.4" />
+        <circle cx="200" cy="120" r="50" fill={accent} opacity="0.15" />
+      </g>
+    </svg>
+  )}
+  {motif === 'glyph' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-glyph" fill={accent} font-family="ui-monospace, monospace" font-size="14">
+        <text x="40" y="60" opacity="0.8">{'{ }'}</text>
+        <text x="120" y="100" opacity="0.6">{'=>'}</text>
+        <text x="200" y="70" opacity="0.9">{'</>'}</text>
+        <text x="280" y="140" opacity="0.5">{'#'}</text>
+        <text x="80" y="180" opacity="0.7">{'[ ]'}</text>
+        <text x="240" y="200" opacity="0.6">{'fn()'}</text>
+      </g>
+    </svg>
+  )}
+  {motif === 'stack' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-stack">
+        <rect x="120" y="40" width="160" height="34" fill={accent} opacity="0.9" rx="6" />
+        <rect x="100" y="86" width="200" height="34" fill={accent} opacity="0.7" rx="6" />
+        <rect x="80" y="132" width="240" height="34" fill={accent} opacity="0.5" rx="6" />
+        <rect x="60" y="178" width="280" height="34" fill={accent} opacity="0.3" rx="6" />
+      </g>
+    </svg>
+  )}
+  {motif === 'pulse' && (
+    <svg viewBox="0 0 400 240" class="pv" role="img">
+      <g class="pv-pulse" stroke={accent} stroke-width="2" fill="none">
+        <path d="M0 120 L80 120 L100 60 L120 180 L140 90 L160 150 L180 120 L400 120" />
+      </g>
+      <circle cx="200" cy="120" r="60" fill={accent} opacity="0.1" class="pv-pulse-ring" />
+    </svg>
+  )}
+  <span class="pv-label">{title}</span>
+</div>
+
+<style>
+  .preview {
+    position: relative;
+    aspect-ratio: 5 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--t-accent) 8%, transparent), transparent 50%),
+      var(--t-surface-muted);
+    border: 1px solid var(--t-border);
+  }
+  .pv {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .pv-label {
+    position: absolute;
+    bottom: 0.6rem;
+    left: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: lowercase;
+    color: var(--t-text-muted);
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
+
+  /* default: static. Card hover (via :has from ProjectCard) triggers motion. */
+  .pv-orbit,
+  .pv-grid,
+  .pv-wave,
+  .pv-circuit,
+  .pv-prism,
+  .pv-glyph,
+  .pv-stack,
+  .pv-pulse,
+  .pv-pulse-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* when the parent card is hovered, animate */
+  :global(.project-card:hover) .pv-orbit {
+    animation: pv-spin 9s linear infinite;
+  }
+  :global(.project-card:hover) .pv-grid > * {
+    animation: pv-bob 2.2s ease-in-out infinite;
+  }
+  :global(.project-card:hover) .pv-grid > *:nth-child(2) { animation-delay: 0.2s; }
+  :global(.project-card:hover) .pv-grid > *:nth-child(3) { animation-delay: 0.4s; }
+  :global(.project-card:hover) .pv-grid > *:nth-child(4) { animation-delay: 0.6s; }
+
+  :global(.project-card:hover) .pv-wave {
+    animation: pv-slide 3s linear infinite;
+  }
+  :global(.project-card:hover) .pv-circuit {
+    animation: pv-dash 4s linear infinite;
+    stroke-dasharray: 6 4;
+  }
+  :global(.project-card:hover) .pv-prism {
+    animation: pv-spin 12s linear infinite;
+  }
+  :global(.project-card:hover) .pv-glyph > * {
+    animation: pv-blink 1.6s steps(2) infinite;
+  }
+  :global(.project-card:hover) .pv-glyph > *:nth-child(2n) { animation-delay: 0.3s; }
+  :global(.project-card:hover) .pv-stack > * {
+    animation: pv-stack-in 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  }
+  :global(.project-card:hover) .pv-stack > *:nth-child(2) { animation-delay: 0.15s; }
+  :global(.project-card:hover) .pv-stack > *:nth-child(3) { animation-delay: 0.3s; }
+  :global(.project-card:hover) .pv-stack > *:nth-child(4) { animation-delay: 0.45s; }
+  :global(.project-card:hover) .pv-pulse {
+    animation: pv-dash 2s linear infinite;
+    stroke-dasharray: 4 2;
+  }
+  :global(.project-card:hover) .pv-pulse-ring {
+    animation: pv-ring 2s ease-out infinite;
+  }
+
+  @keyframes pv-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pv-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pv-slide {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100px); }
+  }
+  @keyframes pv-dash {
+    to { stroke-dashoffset: -100; }
+  }
+  @keyframes pv-blink {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.2; }
+  }
+  @keyframes pv-stack-in {
+    0% { transform: translateX(-30px); opacity: 0; }
+    30%, 70% { opacity: 1; transform: translateX(0); }
+    100% { transform: translateX(30px); opacity: 0; }
+  }
+  @keyframes pv-ring {
+    0% { transform: scale(0.6); opacity: 0.6; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pv-orbit, .pv-grid > *, .pv-wave, .pv-circuit, .pv-prism,
+    .pv-glyph > *, .pv-stack > *, .pv-pulse, .pv-pulse-ring {
+      animation: none !important;
+    }
+  }
+</style>

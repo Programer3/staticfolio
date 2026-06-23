@@ -1,0 +1,17 @@
+{
+  "name": "Aman Verma — Portfolio",
+  "short_name": "portfolio",
+  "description": "Software engineer · interface tinkerer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07070b",
+  "theme_color": "#07070b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

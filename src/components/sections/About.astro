@@ -1,0 +1,198 @@
+---
+/**
+ * About — narrative bio + philosophy sidebar.
+ * High text-to-fluff. The sidebar carries the Philosophy + Core Principles
+ * cards (ported from prev1) and the live LOC counter widget.
+ */
+import { portfolio } from '../../data/portfolio';
+import MagneticButton from '../MagneticButton.astro';
+import LocCounter from '../LocCounter.astro';
+
+const principles = [
+  'Clean Architecture > Magic',
+  'Tests are documentation',
+  'SOLID by default',
+  'Out-of-the-box thinking',
+  'Maintainability first',
+];
+---
+
+<section id="about" class="about section" aria-labelledby="about-title">
+  <div class="section-head" data-reveal>
+    <span class="sec-num">01</span>
+    <h2 id="about-title" class="sec-title">about</h2>
+    <span class="sec-rule"></span>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-copy" data-reveal data-reveal-delay="0.05">
+      {portfolio.about.map((para) => <p>{para}</p>)}
+      <p class="nowadays">
+        <span class="now-tag">// these days</span>
+        {portfolio.nowadays}
+      </p>
+      <MagneticButton href={portfolio.cvUrl} download variant="outline" size="md" label="full résumé (pdf)" iconRight="download" cursorLabel="cv" />
+    </div>
+
+    <aside class="about-side" data-reveal data-reveal-delay="0.1">
+      <div class="philosophy glass">
+        <h3 class="phi-title">Philosophy</h3>
+        <div class="phi-body">
+          <p>
+            I believe software should be built to last. That means prioritizing
+            maintainability over cleverness, readability over brevity, and
+            testing over speculation.
+          </p>
+          <p>
+            Every line of code is a liability until proven otherwise. I write
+            code that's easy to delete, easy to change, and easy to understand
+            six months from now.
+          </p>
+          <p>
+            I'm an introvert by nature, which means I listen more than I talk,
+            and I think before I act. In code, that translates to fewer bugs,
+            cleaner architecture, and better decisions.
+          </p>
+        </div>
+      </div>
+
+      <div class="principles glass">
+        <h3 class="pr-h">Core Principles</h3>
+        <ul class="pr-list">
+          {principles.map((p) => (
+            <li><span aria-hidden="true">—</span>{p}</li>
+          ))}
+        </ul>
+      </div>
+
+      <LocCounter />
+    </aside>
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 3rem);
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--t-accent);
+    letter-spacing: 0.1em;
+  }
+  .sec-title {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    margin: 0;
+  }
+  .sec-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--t-border-strong), transparent);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--t-text);
+  }
+  .about-copy p { margin: 0; }
+  .about-copy p:nth-child(2),
+  .about-copy p:nth-child(3) {
+    color: var(--t-text-muted);
+  }
+  .nowadays {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--t-accent);
+    background: color-mix(in srgb, var(--t-accent) 6%, transparent);
+    border-radius: 0 8px 8px 0;
+    color: var(--t-text) !important;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    margin: 0.5rem 0 1rem;
+  }
+  .now-tag {
+    font-size: 0.7rem;
+    color: var(--t-accent);
+    letter-spacing: 0.05em;
+  }
+
+  .about-side {
+    display: grid;
+    gap: 1rem;
+    position: sticky;
+    top: 6rem;
+  }
+  .philosophy {
+    padding: 1.3rem 1.4rem;
+    border-radius: var(--radius-lg);
+  }
+  .phi-title {
+    font-size: 1.1rem;
+    margin: 0 0 0.8rem;
+    color: var(--t-text);
+  }
+  .phi-body {
+    display: grid;
+    gap: 0.7rem;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--t-text-muted);
+  }
+  .phi-body p { margin: 0; }
+
+  .principles {
+    padding: 1.1rem 1.3rem;
+    border-radius: var(--radius-lg);
+  }
+  .pr-h {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--t-accent);
+    margin: 0 0 0.7rem;
+  }
+  .pr-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+  .pr-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--t-text-muted);
+  }
+  .pr-list li span {
+    color: color-mix(in srgb, var(--t-text-muted) 50%, transparent);
+  }
+</style>

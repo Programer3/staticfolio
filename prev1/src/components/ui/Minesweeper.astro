@@ -1,0 +1,229 @@
+---
+// Minesweeper — Minimal 9x9 game, 10 mines
+// Opens in a glass-panel modal. Classic beginner rules.
+// Pure JS within a scoped component.
+---
+
+---
+
+<style>
+  .ms-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 36px);
+    gap: 2px;
+    justify-content: center;
+  }
+  .ms-cell {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--theme-font-code);
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    background: var(--theme-muted);
+    color: var(--theme-fg);
+    transition: background 0.1s;
+    user-select: none;
+  }
+  .ms-cell:hover {
+    background: var(--theme-accent);
+    color: var(--theme-bg);
+  }
+  .ms-cell.revealed {
+    background: var(--theme-card);
+    cursor: default;
+  }
+  .ms-cell.revealed:hover {
+    background: var(--theme-card);
+    color: var(--theme-fg);
+  }
+  .ms-cell.mine {
+    background: var(--theme-destructive);
+  }
+  .ms-cell.flagged {
+    background: var(--theme-primary);
+    color: var(--theme-bg);
+  }
+  .ms-cell.n1 { color: oklch(0.6 0.15 220); }
+  .ms-cell.n2 { color: oklch(0.6 0.15 140); }
+  .ms-cell.n3 { color: var(--theme-destructive); }
+  .ms-cell.n4 { color: oklch(0.5 0.15 280); }
+  .ms-cell.n5 { color: oklch(0.5 0.15 10); }
+  .ms-cell.n6 { color: oklch(0.5 0.15 190); }
+  .ms-cell.n7 { color: oklch(0.3 0.1 0); }
+  .ms-cell.n8 { color: oklch(0.5 0.1 30); }
+</style>
+
+<div id="minesweeper-root" class="select-none">
+  <div class="flex items-center justify-between mb-3">
+    <span class="micro-label" id="ms-mines">10</span>
+    <button id="ms-restart" class="micro-label px-3 py-1 rounded-full bg-primary text-[var(--theme-bg)]">Restart</button>
+    <span class="micro-label" id="ms-timer">000</span>
+  </div>
+  <div class="ms-grid" id="ms-board"></div>
+  <div class="text-center mt-3">
+    <span class="micro-label" id="ms-status">Click to start</span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var ROWS = 9, COLS = 9, MINES = 10;
+    var board = [], revealed = [], flagged = [];
+    var gameOver = false, firstClick = true, timerInterval = null, seconds = 0;
+    var boardEl = document.getElementById("ms-board");
+    var statusEl = document.getElementById("ms-status");
+    var minesEl = document.getElementById("ms-mines");
+    var timerEl = document.getElementById("ms-timer");
+    var restartBtn = document.getElementById("ms-restart");
+
+    function initBoard() {
+      board = []; revealed = []; flagged = [];
+      gameOver = false; firstClick = true; seconds = 0;
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      timerEl.textContent = "000";
+      minesEl.textContent = "10";
+      statusEl.textContent = "Click to start";
+      for (var r = 0; r < ROWS; r++) {
+        board[r] = []; revealed[r] = []; flagged[r] = [];
+        for (var c = 0; c < COLS; c++) {
+          board[r][c] = 0; revealed[r][c] = false; flagged[r][c] = false;
+        }
+      }
+      render();
+    }
+
+    function placeMines(safeR, safeC) {
+      var placed = 0;
+      while (placed < MINES) {
+        var r = Math.floor(Math.random() * ROWS);
+        var c = Math.floor(Math.random() * COLS);
+        if (board[r][c] !== -1 && !(r === safeR && c === safeC)) {
+          board[r][c] = -1;
+          placed++;
+        }
+      }
+      for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+          if (board[r][c] === -1) continue;
+          var count = 0;
+          for (var dr = -1; dr <= 1; dr++) {
+            for (var dc = -1; dc <= 1; dc++) {
+              var nr = r + dr, nc = c + dc;
+              if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && board[nr][nc] === -1) count++;
+            }
+          }
+          board[r][c] = count;
+        }
+      }
+    }
+
+    function reveal(r, c) {
+      if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
+      if (revealed[r][c] || flagged[r][c]) return;
+      revealed[r][c] = true;
+      if (board[r][c] === -1) {
+        gameOver = true;
+        revealAll();
+        statusEl.textContent = "Game Over!";
+        if (timerInterval) clearInterval(timerInterval);
+        return;
+      }
+      if (board[r][c] === 0) {
+        for (var dr = -1; dr <= 1; dr++)
+          for (var dc = -1; dc <= 1; dc++)
+            reveal(r + dr, c + dc);
+      }
+      render();
+      checkWin();
+    }
+
+    function revealAll() {
+      for (var r = 0; r < ROWS; r++)
+        for (var c = 0; c < COLS; c++)
+          if (board[r][c] === -1) revealed[r][c] = true;
+      render();
+    }
+
+    function checkWin() {
+      var count = 0;
+      for (var r = 0; r < ROWS; r++)
+        for (var c = 0; c < COLS; c++)
+          if (revealed[r][c]) count++;
+      if (count === ROWS * COLS - MINES) {
+        gameOver = true;
+        statusEl.textContent = "You Win!";
+        if (timerInterval) clearInterval(timerInterval);
+      }
+    }
+
+    function flag(r, c) {
+      if (revealed[r][c] || gameOver) return;
+      flagged[r][c] = !flagged[r][c];
+      var count = 0;
+      for (var ri = 0; ri < ROWS; ri++)
+        for (var ci = 0; ci < COLS; ci++)
+          if (flagged[ri][ci]) count++;
+      minesEl.textContent = String(MINES - count);
+      render();
+    }
+
+    function render() {
+      var html = "";
+      for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+          var cls = "ms-cell";
+          var content = "";
+          if (revealed[r][c]) {
+            cls += " revealed";
+            if (board[r][c] === -1) {
+              cls += " mine";
+              content = "💣";
+            } else if (board[r][c] > 0) {
+              cls += " n" + board[r][c];
+              content = String(board[r][c]);
+            }
+          } else if (flagged[r][c]) {
+            cls += " flagged";
+            content = "🚩";
+          }
+          html += '<div class="' + cls + '" data-r="' + r + '" data-c="' + c + '">' + content + '</div>';
+        }
+      }
+      boardEl.innerHTML = html;
+    }
+
+    boardEl.addEventListener("click", function (e) {
+      var cell = e.target.closest(".ms-cell");
+      if (!cell || gameOver) return;
+      var r = parseInt(cell.dataset.r), c = parseInt(cell.dataset.c);
+      if (flagged[r][c]) return;
+      if (firstClick) {
+        firstClick = false;
+        placeMines(r, c);
+        timerInterval = setInterval(function () {
+          seconds++;
+          timerEl.textContent = String(seconds).padStart(3, "0");
+        }, 1000);
+        statusEl.textContent = "Playing...";
+      }
+      reveal(r, c);
+    });
+
+    boardEl.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      var cell = e.target.closest(".ms-cell");
+      if (!cell || gameOver) return;
+      var r = parseInt(cell.dataset.r), c = parseInt(cell.dataset.c);
+      flag(r, c);
+    });
+
+    restartBtn.addEventListener("click", function () { initBoard(); });
+    initBoard();
+  })();
+</script>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Aman Verma — Résumé</title>
+<style>
+  @page { size: A4; margin: 14mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    color: #0a0a0f;
+    margin: 0;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  h1 { font-size: 26pt; margin: 0 0 2pt; letter-spacing: -1px; }
+  h2 { font-size: 11pt; margin: 18pt 0 6pt; text-transform: uppercase; letter-spacing: 2px; color: #6d28d9; border-bottom: 1px solid #e5e5ea; padding-bottom: 3pt; }
+  .role { color: #555; font-size: 10pt; margin: 0 0 2pt; }
+  .contact { color: #777; font-size: 9pt; margin: 0 0 10pt; }
+  .contact a { color: #6d28d9; text-decoration: none; }
+  .item { margin: 0 0 10pt; }
+  .item-head { display: flex; justify-content: space-between; font-weight: 600; }
+  .item-meta { color: #777; font-size: 9pt; }
+  ul { margin: 4pt 0; padding-left: 14pt; }
+  li { margin: 1pt 0; }
+  .tags { color: #6d28d9; font-size: 9pt; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+</style>
+</head>
+<body>
+
+<h1>Aman Verma</h1>
+<p class="role">Software Engineer · Interface Tinkerer</p>
+<p class="contact">
+  hello@example.com · Bengaluru, IN · Remote-friendly ·
+  <a href="https://github.com/">github</a> ·
+  <a href="https://read.cv/">read.cv</a>
+</p>
+
+<h2>Summary</h2>
+<p>
+  Frontend-leaning full-stack engineer with ~8 years building interfaces that feel alive — fast,
+  deliberate, accessible. Static-first, motion-aware, performance-hardened. Comfortable across
+  the design-to-deploy seam: design systems, product UI, edge APIs, and the boring infra that
+  makes all of it reliable.
+</p>
+
+<h2>Selected Projects</h2>
+
+<div class="item">
+  <div class="item-head"><span>Halftone — print-quality screenshot engine</span><span class="item-meta">2025</span></div>
+  <div class="tags">TypeScript · WebGL · WASM</div>
+  <ul>
+    <li>WebGL dithering pipeline exporting press-ready CMYK separations from any DOM node.</li>
+    <li>Ships as a 9kb framework-agnostic widget used in 3 production design tools.</li>
+  </ul>
+</div>
+
+<div class="item">
+  <div class="item-head"><span>Loomstate — realtime presence for static sites</span><span class="item-meta">2025</span></div>
+  <div class="tags">TypeScript · CRDT · Edge</div>
+  <ul>
+    <li>CRDT-backed presence layer bolting onto any static deploy with one script tag.</li>
+    <li>Sub-50ms cursor sync across regions; no backend deploys required.</li>
+  </ul>
+</div>
+
+<div class="item">
+  <div class="item-head"><span>Cartograph — dependency visualizer</span><span class="item-meta">2024</span></div>
+  <div class="tags">Three.js · Rust · WASM</div>
+  <ul>
+    <li>Parses import graphs into interactive 3D skylines; building height = cyclomatic complexity.</li>
+    <li>Adopted for architecture reviews at two mid-size eng orgs.</li>
+  </ul>
+</div>
+
+<div class="item">
+  <div class="item-head"><span>Pocketmode — thumb-first mobile nav</span><span class="item-meta">2024</span></div>
+  <div class="tags">TypeScript · GSAP · A11y</div>
+  <ul>
+    <li>Drop-in bottom-sheet navigation with physics-based snapping.</li>
+    <li>Tested across 40+ real devices; used by 3 fintech apps in production.</li>
+  </ul>
+</div>
+
+<h2>Experience</h2>
+
+<div class="item">
+  <div class="item-head"><span>Senior Frontend Engineer — (placeholder company)</span><span class="item-meta">2022 — present</span></div>
+  <ul>
+    <li>Led migration of the marketing stack to Astro; cut median LCP from 3.1s to 0.9s.</li>
+    <li>Owned the design-system rewrite (300+ components, full a11y audit).</li>
+  </ul>
+</div>
+
+<div class="item">
+  <div class="item-head"><span>Frontend Engineer — (placeholder company)</span><span class="item-meta">2018 — 2022</span></div>
+  <ul>
+    <li>Built the core product UI from prototype to 200k MAU.</li>
+    <li>Introduced visual regression testing; eliminated a class of release-blocking bugs.</li>
+  </ul>
+</div>
+
+<div class="two">
+  <div>
+    <h2>Toolkit</h2>
+    <p>TypeScript · React · Astro · Next.js · Svelte<br/>
+       Node.js · Bun · Go · Rust<br/>
+       Tailwind · GSAP · Three.js · WebGL<br/>
+       PostgreSQL · Redis · GraphQL · Docker · AWS</p>
+  </div>
+  <div>
+    <h2>Focus Areas</h2>
+    <ul>
+      <li>Rendering & load performance</li>
+      <li>Accessible motion / a11y</li>
+      <li>Design systems at scale</li>
+      <li>Edge runtimes &amp; islands</li>
+    </ul>
+  </div>
+</div>
+
+<p style="margin-top:18pt; color:#999; font-size:8pt;">
+  Replace this placeholder at <code>public/cv.pdf</code> with your real résumé. Source HTML kept at <code>public/cv-placeholder.html</code>.
+</p>
+
+</body>
+</html>

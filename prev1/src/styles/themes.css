@@ -1,0 +1,336 @@
+/* ===== Dev-foliio Theme System =====
+ * 15 themes: Blueprint (default), Terminal, Paper, Neon Void,
+ * Emerald, Winter, Dracula, Luxury, Silk, Cupcake,
+ * TF2 Red, Indian Peacock, Panda, Bumblebee, Claude, Synthwave
+ */
+
+:root,
+[data-theme="blueprint"] {
+  /* === BLUEPRINT (Default) — Dark ink, amber commands, teal energy === */
+  --theme-bg: oklch(0.15 0.038 252);
+  --theme-bg-alt: oklch(0.18 0.04 254);
+  --theme-fg: oklch(0.94 0.034 88);
+  --theme-fg-muted: oklch(0.73 0.042 88);
+  --theme-card: oklch(0.205 0.044 252 / 78%);
+  --theme-card-border: oklch(0.98 0.02 88 / 14%);
+  --theme-primary: oklch(0.78 0.16 61); /* #ffba49 Amber */
+  --theme-primary-hover: oklch(0.82 0.15 58);
+  --theme-accent: oklch(0.77 0.134 178); /* #20a39e Teal */
+  --theme-accent-hover: oklch(0.82 0.12 176);
+  --theme-destructive: oklch(0.68 0.21 31); /* #ef5b5b Coral */
+  --theme-muted: oklch(0.26 0.052 252 / 64%);
+  --theme-ring: oklch(0.8 0.15 178);
+  --theme-grid: oklch(0.98 0.02 88 / 6%);
+  --theme-orb-1: oklch(0.78 0.16 61 / 12%);
+  --theme-orb-2: oklch(0.77 0.134 178 / 10%);
+  --theme-orb-3: oklch(0.68 0.14 261 / 8%);
+  --theme-noise: oklch(1 0 0 / 3%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 40px oklch(0.78 0.16 61 / 15%);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="terminal"] {
+  /* === TERMINAL — Green-on-black, CRT scanlines, retro dev === */
+  --theme-bg: oklch(0.08 0.02 160);
+  --theme-bg-alt: oklch(0.12 0.03 158);
+  --theme-fg: oklch(0.87 0.15 140);
+  --theme-fg-muted: oklch(0.6 0.1 142);
+  --theme-card: oklch(0.12 0.04 156 / 80%);
+  --theme-card-border: oklch(0.87 0.15 140 / 20%);
+  --theme-primary: oklch(0.8 0.18 145);
+  --theme-primary-hover: oklch(0.85 0.16 142);
+  --theme-accent: oklch(0.75 0.12 170);
+  --theme-accent-hover: oklch(0.8 0.1 168);
+  --theme-destructive: oklch(0.65 0.2 30);
+  --theme-muted: oklch(0.15 0.05 156 / 60%);
+  --theme-ring: oklch(0.8 0.18 145);
+  --theme-grid: oklch(0.87 0.15 140 / 5%);
+  --theme-orb-1: oklch(0.8 0.18 145 / 8%);
+  --theme-orb-2: oklch(0.75 0.12 170 / 6%);
+  --theme-orb-3: oklch(0.7 0.1 150 / 4%);
+  --theme-noise: oklch(0 0 0 / 15%);
+  --theme-font-display: "IBM Plex Mono", "JetBrains Mono", monospace;
+  --theme-font-body: "IBM Plex Mono", "JetBrains Mono", monospace;
+  --theme-font-code: "JetBrains Mono", "IBM Plex Mono", monospace;
+  --theme-glow: 0 0 30px oklch(0.8 0.18 145 / 20%);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="paper"] {
+  /* === WARM PAPER — Cream parchment, sepia, soft shadows === */
+  --theme-bg: oklch(0.94 0.032 86);
+  --theme-bg-alt: oklch(0.9 0.035 84);
+  --theme-fg: oklch(0.19 0.029 252);
+  --theme-fg-muted: oklch(0.42 0.036 252);
+  --theme-card: oklch(0.985 0.026 92 / 84%);
+  --theme-card-border: oklch(0.24 0.035 252 / 18%);
+  --theme-primary: oklch(0.68 0.165 55);
+  --theme-primary-hover: oklch(0.72 0.15 52);
+  --theme-accent: oklch(0.78 0.122 174);
+  --theme-accent-hover: oklch(0.82 0.11 172);
+  --theme-destructive: oklch(0.58 0.21 31);
+  --theme-muted: oklch(0.88 0.03 84 / 68%);
+  --theme-ring: oklch(0.76 0.14 174);
+  --theme-grid: oklch(0.19 0.029 252 / 6%);
+  --theme-orb-1: oklch(0.68 0.165 55 / 10%);
+  --theme-orb-2: oklch(0.78 0.122 174 / 8%);
+  --theme-orb-3: oklch(0.6 0.1 261 / 5%);
+  --theme-noise: oklch(0 0 0 / 2%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 30px oklch(0.68 0.165 55 / 10%);
+  --theme-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="emerald"] {
+  /* === EMERALD — Light theme: #00674F, #E6A373, #73E6CB, #0A3C30, #E5e7eb === */
+  --theme-bg: #E5E7EB;
+  --theme-bg-alt: #D1D5DB;
+  --theme-fg: #0A3C30;
+  --theme-fg-muted: #1A5C4A;
+  --theme-card: rgba(255, 255, 255, 0.8);
+  --theme-card-border: rgba(10, 60, 48, 0.12);
+  --theme-primary: #00674F; /* Deep green */
+  --theme-primary-hover: #008566;
+  --theme-accent: #E6A373; /* Warm orange */
+  --theme-accent-hover: #D98F5F;
+  --theme-destructive: #DC2626;
+  --theme-muted: rgba(10, 60, 48, 0.08);
+  --theme-muted-solid: #CED4D0;
+  --theme-ring: #00674F;
+  --theme-grid: rgba(10, 60, 48, 0.06);
+  --theme-orb-1: rgba(0, 103, 79, 0.08);
+  --theme-orb-2: rgba(115, 230, 203, 0.12);
+  --theme-orb-3: rgba(230, 163, 115, 0.06);
+  --theme-noise: rgba(0, 0, 0, 0.02);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 20px rgba(0, 103, 79, 0.12);
+  --theme-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="winter"] {
+  /* === WINTER — Ice blue, silver, frost === */
+  --theme-bg: oklch(0.2 0.03 240);
+  --theme-bg-alt: oklch(0.24 0.04 238);
+  --theme-fg: oklch(0.95 0.02 210);
+  --theme-fg-muted: oklch(0.75 0.03 220);
+  --theme-card: oklch(0.25 0.04 240 / 70%);
+  --theme-card-border: oklch(0.9 0.02 210 / 12%);
+  --theme-primary: oklch(0.85 0.06 200); /* Ice blue */
+  --theme-primary-hover: oklch(0.9 0.05 198);
+  --theme-accent: oklch(0.8 0.08 190); /* Frost teal */
+  --theme-accent-hover: oklch(0.85 0.06 188);
+  --theme-destructive: oklch(0.65 0.18 25);
+  --theme-muted: oklch(0.28 0.04 240 / 60%);
+  --theme-ring: oklch(0.85 0.06 200);
+  --theme-grid: oklch(0.9 0.02 210 / 5%);
+  --theme-orb-1: oklch(0.85 0.06 200 / 10%);
+  --theme-orb-2: oklch(0.8 0.08 190 / 8%);
+  --theme-orb-3: oklch(0.7 0.05 230 / 5%);
+  --theme-noise: oklch(1 0 0 / 3%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 30px oklch(0.85 0.06 200 / 12%);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dracula"] {
+  /* === DRACULA — VS Code Dracula: dark purple, pink, cyan === */
+  --theme-bg: #282a36;
+  --theme-bg-alt: #21222c;
+  --theme-fg: #f8f8f2;
+  --theme-fg-muted: #6272a4;
+  --theme-card: rgba(68, 71, 90, 0.7);
+  --theme-card-border: rgba(98, 114, 164, 0.2);
+  --theme-primary: #ff79c6; /* Pink */
+  --theme-primary-hover: #ff92d0;
+  --theme-accent: #8be9fd; /* Cyan */
+  --theme-accent-hover: #a4f0fe;
+  --theme-destructive: #ff5555;
+  --theme-muted: #44475a;
+  --theme-ring: #ff79c6;
+  --theme-grid: rgba(248, 248, 242, 0.05);
+  --theme-orb-1: rgba(255, 121, 198, 0.1);
+  --theme-orb-2: rgba(139, 233, 253, 0.08);
+  --theme-orb-3: rgba(189, 147, 249, 0.06);
+  --theme-noise: rgba(0, 0, 0, 0.08);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 40px rgba(255, 121, 198, 0.2);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="luxury"] {
+  /* === LUXURY — Black, red, gold, opulent === */
+  --theme-bg: #0a0a0a;
+  --theme-bg-alt: #1a1a1a;
+  --theme-fg: #f5f0e8;
+  --theme-fg-muted: #8a7a6a;
+  --theme-card: rgba(20, 15, 10, 0.75);
+  --theme-card-border: rgba(212, 160, 23, 0.15);
+  --theme-primary: #d4a017; /* Gold */
+  --theme-primary-hover: #e0b832;
+  --theme-accent: #8b0000; /* Deep red */
+  --theme-accent-hover: #a52a2a;
+  --theme-destructive: #ff4444;
+  --theme-muted: #1a1510;
+  --theme-ring: #d4a017;
+  --theme-grid: rgba(212, 160, 23, 0.04);
+  --theme-orb-1: rgba(212, 160, 23, 0.1);
+  --theme-orb-2: rgba(139, 0, 0, 0.08);
+  --theme-orb-3: rgba(245, 240, 232, 0.04);
+  --theme-noise: rgba(0, 0, 0, 0.08);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 30px rgba(212, 160, 23, 0.15);
+  --theme-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="silk"] {
+  /* === SILK — Muted rose, cream, soft elegance === */
+  --theme-bg: oklch(0.9 0.02 30);
+  --theme-bg-alt: oklch(0.85 0.03 32);
+  --theme-fg: oklch(0.2 0.04 340);
+  --theme-fg-muted: oklch(0.45 0.04 350);
+  --theme-card: oklch(0.95 0.02 30 / 80%);
+  --theme-card-border: oklch(0.8 0.03 340 / 20%);
+  --theme-primary: oklch(0.65 0.08 10); /* Muted rose */
+  --theme-primary-hover: oklch(0.7 0.06 8);
+  --theme-accent: oklch(0.7 0.06 160); /* Sage */
+  --theme-accent-hover: oklch(0.75 0.05 158);
+  --theme-destructive: oklch(0.55 0.15 25);
+  --theme-muted: oklch(0.85 0.03 30 / 60%);
+  --theme-ring: oklch(0.65 0.08 10);
+  --theme-grid: oklch(0.2 0.04 340 / 6%);
+  --theme-orb-1: oklch(0.65 0.08 10 / 10%);
+  --theme-orb-2: oklch(0.7 0.06 160 / 8%);
+  --theme-orb-3: oklch(0.6 0.05 340 / 5%);
+  --theme-noise: oklch(0 0 0 / 2%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 20px oklch(0.65 0.08 10 / 10%);
+  --theme-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+[data-theme="tf2red"] {
+  /* === TF2 RED — Light theme: Team Fortress 2 RED (#FB524F, #661c18, #dddfd3, #363636) === */
+  --theme-bg: #dddfd3;
+  --theme-bg-alt: #CDD0C2;
+  --theme-fg: #363636;
+  --theme-fg-muted: #5A5A5A;
+  --theme-card: rgba(255, 255, 255, 0.8);
+  --theme-card-border: rgba(54, 54, 54, 0.12);
+  --theme-primary: #FB524F; /* TF2 Red */
+  --theme-primary-hover: #E03D3A;
+  --theme-accent: #661C18; /* Dark red */
+  --theme-accent-hover: #802420;
+  --theme-destructive: #B91C1C;
+  --theme-muted: rgba(54, 54, 54, 0.08);
+  --theme-muted-solid: #C8CABD;
+  --theme-ring: #FB524F;
+  --theme-grid: rgba(54, 54, 54, 0.06);
+  --theme-orb-1: rgba(251, 82, 79, 0.1);
+  --theme-orb-2: rgba(102, 28, 24, 0.08);
+  --theme-orb-3: rgba(54, 54, 54, 0.04);
+  --theme-noise: rgba(0, 0, 0, 0.02);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 20px rgba(251, 82, 79, 0.15);
+  --theme-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+[data-theme="panda"] {
+  /* === PANDA — Black/white, bamboo green === */
+  --theme-bg: oklch(0.08 0.01 0);
+  --theme-bg-alt: oklch(0.14 0.02 0);
+  --theme-fg: oklch(0.93 0.01 80);
+  --theme-fg-muted: oklch(0.65 0.02 60);
+  --theme-card: oklch(0.15 0.02 0 / 75%);
+  --theme-card-border: oklch(0.9 0.01 80 / 12%);
+  --theme-primary: oklch(0.85 0.01 80); /* White */
+  --theme-primary-hover: oklch(0.9 0.01 80);
+  --theme-accent: oklch(0.7 0.1 140); /* Bamboo green */
+  --theme-accent-hover: oklch(0.75 0.08 138);
+  --theme-destructive: oklch(0.65 0.2 30);
+  --theme-muted: oklch(0.18 0.02 0 / 60%);
+  --theme-ring: oklch(0.7 0.1 140);
+  --theme-grid: oklch(0.9 0.01 80 / 4%);
+  --theme-orb-1: oklch(0.85 0.01 80 / 8%);
+  --theme-orb-2: oklch(0.7 0.1 140 / 6%);
+  --theme-orb-3: oklch(0.6 0.05 0 / 4%);
+  --theme-noise: oklch(0 0 0 / 8%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 20px oklch(0.7 0.1 140 / 12%);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+
+[data-theme="claude"] {
+  /* === CLAUDE — Anthropic Claude Code exact oklch palette === */
+  --theme-bg: oklch(0.21 0.01 95.42);
+  --theme-bg-alt: oklch(0.22 0.00 106.71);
+  --theme-fg: oklch(0.98 0.01 95.10);
+  --theme-fg-muted: oklch(0.72 0.02 95);
+  --theme-card: oklch(0.24 0.01 100 / 78%);
+  --theme-card-border: oklch(0.98 0.01 95.10 / 12%);
+  --theme-primary: oklch(0.67 0.13 38.76); /* Orange-coral */
+  --theme-primary-hover: oklch(0.72 0.12 38);
+  --theme-accent: oklch(0.67 0.13 38.76); /* Same orange-coral family */
+  --theme-accent-hover: oklch(0.72 0.11 40);
+  --theme-destructive: oklch(0.64 0.21 25.33); /* Red */
+  --theme-muted: oklch(0.26 0.01 100 / 64%);
+  --theme-muted-solid: oklch(0.30 0.01 95);
+  --theme-ring: oklch(0.67 0.13 38.76);
+  --theme-grid: oklch(0.98 0.01 95.10 / 5%);
+  --theme-orb-1: oklch(0.67 0.13 38.76 / 8%);
+  --theme-orb-2: oklch(0.64 0.21 25.33 / 6%);
+  --theme-orb-3: oklch(0.50 0.05 95 / 5%);
+  --theme-noise: oklch(0 0 0 / 5%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 30px oklch(0.67 0.13 38.76 / 15%);
+  --theme-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="synthwave"] {
+  /* === SYNTHWAVE — Hot pink, cyan, sunset grid, retro 80s === */
+  --theme-bg: oklch(0.08 0.08 310);
+  --theme-bg-alt: oklch(0.12 0.1 308);
+  --theme-fg: oklch(0.95 0.06 330);
+  --theme-fg-muted: oklch(0.7 0.08 310);
+  --theme-card: oklch(0.14 0.1 306 / 70%);
+  --theme-card-border: oklch(0.9 0.1 330 / 14%);
+  --theme-primary: oklch(0.85 0.2 340); /* Hot pink */
+  --theme-primary-hover: oklch(0.9 0.18 338);
+  --theme-accent: oklch(0.85 0.15 190); /* Cyan */
+  --theme-accent-hover: oklch(0.9 0.13 188);
+  --theme-destructive: oklch(0.68 0.2 30);
+  --theme-muted: oklch(0.18 0.1 306 / 60%);
+  --theme-ring: oklch(0.85 0.2 340);
+  --theme-grid: oklch(0.9 0.1 330 / 5%);
+  --theme-orb-1: oklch(0.85 0.2 340 / 12%);
+  --theme-orb-2: oklch(0.85 0.15 190 / 10%);
+  --theme-orb-3: oklch(0.7 0.15 300 / 8%);
+  --theme-noise: oklch(1 0 0 / 5%);
+  --theme-font-display: "Fraunces", Georgia, serif;
+  --theme-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --theme-font-code: "JetBrains Mono", monospace;
+  --theme-glow: 0 0 50px oklch(0.85 0.2 340 / 25%);
+  --theme-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}

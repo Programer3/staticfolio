@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07070b"/>
+      <stop offset="100%" stop-color="#0e0e15"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#a78bfa" opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- corner glyph -->
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="56" height="56" rx="14" fill="none" stroke="url(#accent)" stroke-width="2"/>
+    <path d="M14 38L28 14L42 38" fill="none" stroke="url(#accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19 31H37" fill="none" stroke="url(#accent)" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- text -->
+  <text x="80" y="300" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="22" fill="#a78bfa" letter-spacing="3">SOFTWARE ENGINEER · INTERFACE TINKERER</text>
+  <text x="76" y="400" font-family="ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="700" fill="#f4f4f5" letter-spacing="-2">interfaces that feel</text>
+  <text x="76" y="478" font-family="ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="700" fill="url(#accent)" letter-spacing="-2">alive &amp; deliberate.</text>
+
+  <!-- footer line -->
+  <text x="80" y="560" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="18" fill="#a1a1aa">fast · weird · accessible · 100/100</text>
+</svg>

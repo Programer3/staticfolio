@@ -1,0 +1,97 @@
+---
+// Main Index Page — Single page portfolio
+import Base from "../layouts/Base.astro";
+import Hero from "../components/sections/Hero.astro";
+import About from "../components/sections/About.astro";
+import Projects from "../components/sections/Projects.astro";
+import Contact from "../components/sections/Contact.astro";
+import OrbGlow from "../components/effects/OrbGlow.astro";
+import CustomCursor from "../components/ui/CustomCursor.astro";
+import GoUpButton from "../components/ui/GoUpButton.astro";
+---
+
+<Base>
+  <!-- Background effects — both grids rendered, JS toggles visibility -->
+  <div id="grid-blueprint" class="fixed inset-0 pointer-events-none z-0 blueprint-grid hidden" aria-hidden="true" />
+  <div id="grid-dotted" class="fixed inset-0 pointer-events-none z-0 dotted-grid" aria-hidden="true" />
+  <OrbGlow />
+  <div class="grain-overlay" aria-hidden="true" />
+
+  <!-- Custom cursor -->
+  <CustomCursor />
+
+  <!-- Go up button -->
+  <GoUpButton />
+
+  <!-- Main content -->
+  <Hero />
+  <About />
+  <Projects />
+  <Contact />
+
+  <!-- GSAP ScrollTrigger script (loaded after paint) -->
+  <script>
+    async function loadGSAP() {
+      var gsapModule = await import("../lib/gsap");
+      var gsap = gsapModule.gsap;
+      var ScrollTrigger = gsapModule.ScrollTrigger;
+
+      var sections = [document.getElementById("about"), document.getElementById("projects"), document.getElementById("contact")];
+      sections.forEach(function (section) {
+        if (!section) return;
+        gsap.from(section.querySelector("h2"), {
+          y: 40, opacity: 0, duration: 0.8, ease: "power2.out",
+          scrollTrigger: { trigger: section, start: "top 80%", toggleActions: "play none none reverse" },
+        });
+      });
+
+      var skillsGrid = document.getElementById("skills-grid");
+      if (skillsGrid) {
+        gsap.from(skillsGrid.children, {
+          y: 20, opacity: 0, duration: 0.4, stagger: 0.03, ease: "power2.out",
+          scrollTrigger: { trigger: skillsGrid, start: "top 85%", toggleActions: "play none none reverse" },
+        });
+      }
+
+      var projectsGrid = document.getElementById("projects-grid");
+      if (projectsGrid) {
+        gsap.from(projectsGrid.children, {
+          y: 30, opacity: 0, duration: 0.5, stagger: 0.08, ease: "power2.out",
+          scrollTrigger: { trigger: projectsGrid, start: "top 85%", toggleActions: "play none none reverse" },
+        });
+      }
+
+      ScrollTrigger.refresh();
+    }
+
+    if (document.readyState === "complete") { loadGSAP(); }
+    else { window.addEventListener("load", loadGSAP); }
+  </script>
+
+  <!-- Grid background dynamic switching: blueprint+synthwave get line-grid, rest get dotted -->
+  <script is:inline>
+    (function() {
+      var gridThemes = ['blueprint', 'synthwave'];
+      function updateGrid(theme) {
+        var bp = document.getElementById('grid-blueprint');
+        var dt = document.getElementById('grid-dotted');
+        if (!bp || !dt) return;
+        var useBlueprint = gridThemes.indexOf(theme) !== -1;
+        bp.classList.toggle('hidden', !useBlueprint);
+        dt.classList.toggle('hidden', useBlueprint);
+      }
+      // Run immediately
+      updateGrid(document.documentElement.getAttribute('data-theme') || 'blueprint');
+      // Watch for theme changes
+      var observer = new MutationObserver(function(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+          if (mutations[i].attributeName === 'data-theme') {
+            updateGrid(document.documentElement.getAttribute('data-theme') || 'blueprint');
+            break;
+          }
+        }
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    })();
+  </script>
+</Base>

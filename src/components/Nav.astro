@@ -1,0 +1,279 @@
+---
+/**
+ * Nav — sticky glass bar with anchor links + theme switcher + CV.
+ * - Thumb-friendly targets (min 44px), active-section highlight via IntersectionObserver.
+ * - Collapses to a bottom-sheet on mobile for one-handed reach.
+ */
+import { portfolio } from '../data/portfolio';
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import GooglyEyes from './GooglyEyes.astro';
+import Icon from './Icon.astro';
+
+const links = [
+  { href: '#about', label: 'about' },
+  { href: '#skills', label: 'skills' },
+  { href: '#projects', label: 'work' },
+  { href: '#contact', label: 'contact' },
+];
+---
+
+<header class="nav" data-nav>
+  <div class="nav-inner glass">
+    <a href="#top" class="brand" data-cursor-label="top" aria-label={`${portfolio.name} — home`}>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M7 16L12 7L17 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 13H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name">{portfolio.name.split(' ')[0].toLowerCase()}</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="nav-link"
+            data-nav-link={l.href}
+            data-cursor-label={l.label}
+          >
+            <span class="nav-index" aria-hidden="true">/{String(links.indexOf(l) + 1).padStart(2, '0')}</span>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="nav-actions">
+      <ThemeSwitcher />
+      <GooglyEyes />
+    </div>
+  </div>
+
+  <!-- Mobile bottom-sheet nav -->
+  <nav class="mobile-nav glass" aria-label="Mobile">
+    {
+      links.concat([{ href: '#top', label: 'top' }]).map((l) => (
+        <a
+          href={l.href}
+          class="mobile-link"
+          data-nav-link={l.href}
+          data-cursor-label={l.label}
+          aria-label={l.label}
+        >
+          <Icon slug="arrow" size={18} />
+          <span>{l.label}</span>
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    pointer-events: none;
+  }
+  .nav-inner {
+    pointer-events: auto;
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.6rem 0.5rem 0.9rem;
+    border-radius: 999px;
+    transition:
+      transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.3s ease;
+  }
+  .nav.scrolled .nav-inner {
+    box-shadow: 0 10px 40px -20px rgba(0, 0, 0, 0.5);
+  }
+  /* hide up on scroll-down, show on scroll-up */
+  .nav.hide-up {
+    transform: translateY(-130%);
+  }
+
+  /* brand */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 999px;
+  }
+  .brand-mark {
+    color: var(--t-accent);
+    display: inline-flex;
+    filter: drop-shadow(
+      0 0 8px color-mix(in srgb, var(--t-accent) 50%, transparent)
+    );
+  }
+  .brand-text {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-mono);
+  }
+  .brand-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* desktop links */
+  .nav-links {
+    display: flex;
+    gap: 0.2rem;
+  }
+  .nav-link {
+    position: relative;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    color: var(--t-text-muted);
+    border-radius: 999px;
+    transition: color 0.2s ease, background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .nav-index {
+    font-size: 0.65rem;
+    opacity: 0.5;
+  }
+  .nav-link:hover {
+    color: var(--t-text);
+    background: var(--t-surface);
+  }
+  .nav-link.active {
+    color: var(--t-text);
+    background: color-mix(in srgb, var(--t-accent) 12%, transparent);
+  }
+  .nav-link.active .nav-index {
+    color: var(--t-accent);
+    opacity: 1;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* mobile bottom-sheet */
+  .mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .nav-links,
+    .nav-actions {
+      display: none;
+    }
+    .mobile-nav {
+      display: flex;
+      pointer-events: auto;
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 0.3rem;
+      padding: 0.4rem;
+      border-radius: 999px;
+      max-width: calc(100vw - 2rem);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mobile-nav::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-link {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      padding: 0.5rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      color: var(--t-text-muted);
+      min-width: 56px;
+      min-height: 48px;
+      justify-content: center;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .mobile-link.active {
+      color: var(--t-accent);
+      background: var(--t-surface);
+    }
+  }
+</style>
+
+<script>
+  // ── Nav behaviour: hide-on-scroll, active section, smooth anchor ───────
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  if (nav) {
+    let lastY = 0;
+    const onScroll = () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 12);
+      // hide on down-scroll past 200px, show on up-scroll
+      if (y > 200 && y > lastY) nav.classList.add('hide-up');
+      else nav.classList.remove('hide-up');
+      lastY = y;
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // ── Active section via IntersectionObserver ────────────────────────────
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')
+  );
+  const sections = links
+    .map((l) => document.querySelector(l.getAttribute('href') || ''))
+    .filter((el): el is Element => !!el);
+
+  const setActive = (id: string) => {
+    links.forEach((l) =>
+      l.classList.toggle('active', l.getAttribute('href') === `#${id}`)
+    );
+  };
+
+  if (sections.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    sections.forEach((s) => io.observe(s));
+  }
+
+  // ── Smooth-scroll with header offset (graceful; respects reduced motion) ─
+  links.forEach((l) => {
+    l.addEventListener('click', (e) => {
+      const id = l.getAttribute('href');
+      if (!id || !id.startsWith('#')) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+</script>

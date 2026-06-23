@@ -1,0 +1,83 @@
+---
+// Custom cursor — small dot that follows mouse, smooth 60fps
+// Only shows on devices with fine pointer (not mobile touch)
+---
+
+<style>
+  .custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--theme-accent);
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, background 0.2s ease, opacity 0.3s ease;
+    will-change: transform;
+  }
+  .custom-cursor.hovering {
+    width: 24px;
+    height: 24px;
+    background: var(--theme-primary);
+    opacity: 0.6;
+  }
+  @media (pointer: coarse) {
+    .custom-cursor { display: none; }
+  }
+</style>
+
+<div id="cursor" class="custom-cursor" aria-hidden="true" />
+
+<script>
+  var cursor = document.getElementById("cursor");
+  var posX = 0;
+  var posY = 0;
+  var targetX = 0;
+  var targetY = 0;
+
+  document.addEventListener("mousemove", function (e) {
+    targetX = e.clientX;
+    targetY = e.clientY;
+  });
+
+  function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+  }
+
+  function animate() {
+    posX = lerp(posX, targetX, 0.15);
+    posY = lerp(posY, targetY, 0.15);
+    cursor.style.left = posX + "px";
+    cursor.style.top = posY + "px";
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  document.addEventListener("mouseover", function (e) {
+    var target = e.target;
+    if (
+      target.tagName === "BUTTON" ||
+      target.tagName === "A" ||
+      target.closest("button") ||
+      target.closest("a") ||
+      target.closest("[data-magnetic]")
+    ) {
+      cursor.classList.add("hovering");
+    }
+  });
+
+  document.addEventListener("mouseout", function (e) {
+    var target = e.target;
+    if (
+      target.tagName === "BUTTON" ||
+      target.tagName === "A" ||
+      target.closest("button") ||
+      target.closest("a") ||
+      target.closest("[data-magnetic]")
+    ) {
+      cursor.classList.remove("hovering");
+    }
+  });
+</script>

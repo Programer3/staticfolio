@@ -1,0 +1,84 @@
+---
+// About Section — "The Tool Wall"
+import SkillCard from "../ui/SkillCard.astro";
+import { skills } from "../../lib/data/skills";
+---
+
+<section
+  id="about"
+  class="py-20 sm:py-28 relative z-10 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-[1200px] mx-auto">
+    <div class="mb-12 sm:mb-16">
+      <span class="micro-label text-accent">// 01</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-fg mt-2 tracking-tighter">
+        Tool Wall
+      </h2>
+      <p class="font-body text-fg-muted mt-3 max-w-xl leading-relaxed">
+        I don't collect languages. I build with the right tool for the problem.
+        Here are the tools I reach for.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-[1fr_320px] gap-8 lg:gap-12">
+      <!-- Skills Grid -->
+      <div
+        id="skills-grid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 stagger-fade-in"
+      >
+        {skills.map((skill, i) => (
+          <SkillCard
+            name={skill.name}
+            icon={skill.icon}
+            context={skill.context}
+            why={skill.why}
+            index={i}
+          />
+        ))}
+      </div>
+
+      <!-- Philosophy sidebar -->
+      <div class="space-y-6">
+        <div class="paper-card p-5 sm:p-6">
+          <h3 class="font-display text-lg font-bold text-fg mb-3">Philosophy</h3>
+          <div class="space-y-3 font-body text-sm text-fg-muted leading-relaxed">
+            <p>
+              I believe software should be built to last. That means prioritizing
+              maintainability over cleverness, readability over brevity, and
+              testing over speculation.
+            </p>
+            <p>
+              Every line of code is a liability until proven otherwise. I write
+              code that's easy to delete, easy to change, and easy to understand
+              six months from now.
+            </p>
+            <p>
+              I'm an introvert by nature, which means I listen more than I talk,
+              and I think before I act. In code, that translates to fewer bugs,
+              cleaner architecture, and better decisions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Core Principles — using monochrome dashes instead of bullets -->
+        <div class="paper-card p-5">
+          <h3 class="micro-label mb-3">Core Principles</h3>
+          <ul class="space-y-2">
+            {[
+              "Clean Architecture > Magic",
+              "Tests are documentation",
+              "SOLID by default",
+              "Out-of-the-box thinking",
+              "Maintainability first",
+            ].map((p) => (
+              <li class="flex items-start gap-2 font-body text-xs text-fg-muted">
+                <span class="text-fg-muted/30 font-code">—</span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
