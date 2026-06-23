@@ -204,11 +204,9 @@
     cursor: grabbing;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .hud {
-      bottom: 5rem; /* clear mobile nav */
-      right: 0.75rem;
-      width: 13rem;
+      display: none !important;
     }
   }
 
@@ -221,8 +219,10 @@
 
 <script>
   // ── Activity HUD runtime ───────────────────────────────────────────────
+  // Skip all HUD initialization on mobile/small screens to save resources
+  const isMobileHUD = matchMedia('(max-width: 768px)').matches;
   const hud = document.querySelector<HTMLElement>('[data-hud]');
-  if (hud) {
+  if (hud && !isMobileHUD) {
     const $ = (s: string) => hud.querySelector<HTMLElement>(s)!;
     const uptimeEl = $('[data-hud-uptime]');
     const sectionEl = $('[data-hud-section]');

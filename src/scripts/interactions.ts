@@ -39,7 +39,8 @@ async function init() {
   initReveals();
   initParallax();
   initMagnetic();
-  initKonami();
+  // Skip Konami code (snake game) on touch devices — no keyboard available
+  if (!touch) initKonami();
 }
 
 // ── Scroll reveals: staggered fade/blur/slide for [data-reveal] ───────────

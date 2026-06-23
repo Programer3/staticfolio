@@ -246,8 +246,11 @@ import Icon from '../Icon.astro';
     cursor: default;
     display: inline-block;
     white-space: nowrap;
-    overflow: hidden;
     vertical-align: top;
+  }
+  /* only clip overflow when scramble animation is active (desktop) */
+  .word-scramble.scramble-ready {
+    overflow: hidden;
   }
 
   /* "alive" — a gentle breathe: scale + soft accent glow. Transform/shadow
@@ -286,7 +289,8 @@ import Icon from '../Icon.astro';
   initCountUp();
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduce) {
+  const isTouch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  if (!reduce && !isTouch) {
     const GLYPHS = '!<>-_\\/[]{}=+*^?#01abcdef';
     document.querySelectorAll<HTMLElement>('[data-scramble]').forEach((el) => {
       const original = el.dataset.scramble || el.textContent || '';
@@ -297,18 +301,30 @@ import Icon from '../Icon.astro';
       // where glyph widths differ from the original letters.
       const lockWidth = () => {
         el.textContent = original;
+        el.style.minWidth = '';
+        el.style.maxWidth = '';
         const w = el.getBoundingClientRect().width;
         if (w > 0) {
-          el.style.minWidth = w + 'px';
-          el.style.maxWidth = w + 'px';
+          // +2px buffer prevents sub-pixel clipping across fonts/screens
+          el.style.minWidth = (w + 2) + 'px';
+          el.style.maxWidth = (w + 2) + 'px';
         }
       };
       lockWidth();
+      // Mark as ready for overflow:hidden only after width is locked
+      el.classList.add('scramble-ready');
+
+      // Recalculate after web fonts finish loading
+      document.fonts.ready.then(() => {
+        lockWidth();
+      });
+
       let resizeTimer = 0;
       addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = window.setTimeout(() => {
           el.style.minWidth = '';
+          el.style.maxWidth = '';
           lockWidth();
         }, 200);
       }, { passive: true });

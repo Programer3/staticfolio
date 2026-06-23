@@ -490,6 +490,10 @@ body > [data-hud] {
   [data-cursor] {
     display: none !important;
   }
+  /* safety net: snake game (konami code) should never appear on touch */
+  .snake-overlay {
+    display: none !important;
+  }
 }
 
 /* terminal-style blinking caret */

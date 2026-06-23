@@ -96,16 +96,24 @@ import SkillCard from '../SkillCard.astro';
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: var(--t-text-muted);
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
     justify-content: center;
     gap: 0.5rem;
     align-items: center;
+    line-height: 1.5;
   }
   .skills-foot span {
     color: var(--t-accent);
     animation: rotate-slow 8s linear infinite;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    line-height: 1;
   }
   @keyframes rotate-slow {
     to { transform: rotate(360deg); }
