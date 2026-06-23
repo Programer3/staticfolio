@@ -40,7 +40,7 @@ jobs:
         with:
           # This automatically sets Astro's `site` + `base` at build time,
           # so project pages work out-of-the-box.
-          enablement: true
+          enablement: false
 
       - name: Build with Astro
         run: npm run build
