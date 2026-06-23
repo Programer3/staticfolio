@@ -238,12 +238,16 @@ import Icon from '../Icon.astro';
 
   /* "weird" — character scramble resolves back to the original word.
      Width is locked to the original text so swapping glyphs (which differ in
-     width across sans/mono fonts) can't reflow the title. */
+     width across sans/mono fonts) can't reflow the title. overflow + vertical-
+     align prevent the span from growing wider than its locked width and pushing
+     sibling text to the next line during the scramble animation. */
   .word-scramble {
     color: var(--t-accent);
     cursor: default;
     display: inline-block;
     white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
   }
 
   /* "alive" — a gentle breathe: scale + soft accent glow. Transform/shadow
@@ -294,7 +298,10 @@ import Icon from '../Icon.astro';
       const lockWidth = () => {
         el.textContent = original;
         const w = el.getBoundingClientRect().width;
-        if (w > 0) el.style.minWidth = w + 'px';
+        if (w > 0) {
+          el.style.minWidth = w + 'px';
+          el.style.maxWidth = w + 'px';
+        }
       };
       lockWidth();
       let resizeTimer = 0;

@@ -265,29 +265,6 @@ export const themes: Theme[] = [
       vibe: 'builders league united',
     },
   },
-  {
-    id: 'panda',
-    label: 'Panda',
-    glyph: '🐼',
-    tokens: {
-      bg: '#0d0d0f',
-      bgAlt: '#161618',
-      surface: 'rgba(255,255,255,0.05)',
-      surfaceMuted: 'rgba(255,255,255,0.025)',
-      border: 'rgba(255,255,255,0.1)',
-      borderStrong: 'rgba(255,255,255,0.2)',
-      text: '#fafafa',
-      textMuted: '#a3a3a3',
-      accent: '#ffffff',
-      accent2: '#a3a3a3',
-      accentText: '#0d0d0f',
-      mode: 'dark',
-      font: 'sans',
-      grain: 0.04,
-      glow: 0.3,
-      vibe: 'monochrome mono',
-    },
-  },
 ];
 
 export const defaultThemeId = 'panda';

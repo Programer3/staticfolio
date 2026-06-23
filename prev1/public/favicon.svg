@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Chaman">
-  <rect width="100" height="100" rx="22" fill="#313e50" />
-  <rect x="1" y="1" width="98" height="98" rx="21" fill="none" stroke="#ffba49" stroke-width="1.5" opacity="0.35" />
-  <text x="50" y="71" font-family="'JetBrains Mono','IBM Plex Mono',monospace" font-size="62" font-weight="700" fill="#ffba49" text-anchor="middle">&gt;_</text>
-</svg>

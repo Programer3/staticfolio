@@ -178,7 +178,7 @@
     height: 26px;
     line-height: 1;
   }
-  .hud-velbars i {
+  .hud-velbars :global(i) {
     width: 3px;
     height: 3px;
     border-radius: 1px;
@@ -186,7 +186,7 @@
     transition: height 0.12s linear, background 0.2s ease;
     will-change: height;
   }
-  .hud-velbars i.peak {
+  .hud-velbars :global(i.peak) {
     background: var(--t-accent);
   }
   .hud-foot {
@@ -255,6 +255,8 @@
       velDisp: new Array(NBARS).fill(0) as number[], // eased display heights
       lastY: scrollY,
       lastT: performance.now(),
+      lastScrollT: performance.now(), // tracks when last scroll event fired
+      lastIdlePush: performance.now(), // throttle zero-pushes when idle
       rollingMax: 1,
     };
 
@@ -288,6 +290,14 @@
       scrollEl.textContent = state.scroll > 500000 ? 'enough' : state.scroll.toLocaleString();
       // velocity decay + eased sparkline
       state.vel *= 0.9;
+      // when idle (no scroll events for 100ms+), push zeros to flatline the graph
+      const now = performance.now();
+      const scrollIdle = now - state.lastScrollT;
+      if (scrollIdle > 100 && now - state.lastIdlePush > 80) {
+        state.velHist.push(0);
+        if (state.velHist.length > NBARS) state.velHist.shift();
+        state.lastIdlePush = now;
+      }
       renderBars();
       requestAnimationFrame(tick);
     };
@@ -311,6 +321,7 @@
         state.scroll += dy;
         state.lastY = scrollY;
         state.lastT = performance.now();
+        state.lastScrollT = performance.now();
         if (dt > 0) {
           const v = (dy / dt) * 1000; // px/s
           state.vel = Math.max(state.vel, v);

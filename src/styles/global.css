@@ -612,7 +612,6 @@ body > [data-hud] {
   border: 1px solid transparent;
   color: var(--t-text);
   background: transparent;
-  overflow: hidden;
   isolation: isolate;
   white-space: nowrap;
   transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -632,6 +631,7 @@ body > [data-hud] {
 .mb--primary {
   background: var(--t-accent);
   color: var(--t-accent-text);
+  overflow: hidden; /* clip the ::after shine sweep */
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--t-accent) 40%, transparent),
     0 12px 30px -10px color-mix(in srgb, var(--t-accent) calc(var(--t-glow) * 100%), transparent);
