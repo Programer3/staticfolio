@@ -12,11 +12,11 @@ import tailwindcss from '@tailwindcss/vite';
  * Tip: most people want this on '/' and to enable GitHub Pages → "Deploy
  * from a branch" pointing at the docs folder, OR use the included workflow.
  */
-const PAGES_BASE = '/';
+const PAGES_BASE = process.env.ASTRO_BASE || '/';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://your-username.github.io',
+  site: process.env.ASTRO_SITE || 'https://your-username.github.io',
   base: PAGES_BASE,
   output: 'static',
   server: { port: 6767 },

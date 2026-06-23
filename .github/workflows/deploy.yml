@@ -48,6 +48,7 @@ jobs:
           # configure-pages injects these so relative asset URLs are correct
           # whether you deploy to a user/org or a project page.
           ASTRO_BASE: ${{ steps.pages.outputs.base_path }}
+          ASTRO_SITE: ${{ steps.pages.outputs.origin }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
