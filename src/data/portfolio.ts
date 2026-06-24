@@ -93,7 +93,7 @@ export const portfolio: Portfolio = {
   ],
   nowadays:
     'Currently learning and Underdstanding System Design using AI and Cloud',
-  cvUrl: '/cv.pdf',
+  cvUrl: '/staticfolio/cv.pdf',
   contactEndpoint: '',
   email: 'amangpta37@gmail.com',
   socials: [
