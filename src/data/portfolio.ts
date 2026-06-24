@@ -23,14 +23,14 @@ export interface Project {
   repo?: string;
   /** visual motif key — drives the generated SVG preview */
   motif:
-    | 'orbit'
-    | 'grid'
-    | 'wave'
-    | 'circuit'
-    | 'prism'
-    | 'glyph'
-    | 'stack'
-    | 'pulse';
+  | 'orbit'
+  | 'grid'
+  | 'wave'
+  | 'circuit'
+  | 'prism'
+  | 'glyph'
+  | 'stack'
+  | 'pulse';
   /** dominant accent used in the preview (CSS color) */
   accent: string;
   /** a featured project gets a bigger bento cell */
@@ -117,11 +117,11 @@ export const portfolio: Portfolio = {
     { name: 'Source', icon: 'source', use: 'Game Engine' },
     { name: 'Java', icon: 'java', use: 'enterprise backends' },
     { name: 'Docker', icon: 'docker', use: 'reproducible deploys' },
-    { name: 'Linux', icon: 'linux', use: 'server environments' },
+    { name: 'Linux', icon: 'linux', use: 'I dont use Arch btw' },
     { name: 'Pandas', icon: 'pandas', use: 'data manipulation' },
     { name: 'Python', icon: 'pyhton', use: 'scripts & ML glue' },
     { name: 'Figma', icon: 'figma', use: 'design-to-code handoff' },
-    { name: 'Git', icon: 'git', use: 'version control & history' },
+    { name: 'Shell', icon: 'shell', use: 'Scripting' },
     { name: 'Google Search', icon: 'googlesearch', use: 'debugging errors & finding solutions' },
   ],
   projects: [

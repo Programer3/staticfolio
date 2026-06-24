@@ -401,17 +401,15 @@ body > [data-hud] {
 
 .glass {
   background: var(--t-surface);
-  --glass-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: var(--glass-filter);
-  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
   border: 1px solid var(--t-border);
 }
 
 .glass-strong {
   background: color-mix(in srgb, var(--t-surface) 60%, var(--t-bg-alt));
-  --glass-filter-strong: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: var(--glass-filter-strong);
-  backdrop-filter: var(--glass-filter-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid var(--t-border-strong);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--t-text) 8%, transparent),
