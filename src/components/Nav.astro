@@ -1,9 +1,4 @@
 ---
-/**
- * Nav — sticky glass bar with anchor links + theme switcher + CV.
- * - Thumb-friendly targets (min 44px), active-section highlight via IntersectionObserver.
- * - Collapses to a bottom-sheet on mobile for one-handed reach.
- */
 import { portfolio } from '../data/portfolio';
 import ThemeSwitcher from './ThemeSwitcher.astro';
 import GooglyEyes from './GooglyEyes.astro';
@@ -55,7 +50,6 @@ const links = [
   </div>
 </header>
 
-<!-- Mobile bottom-sheet nav — lives OUTSIDE header so hide-up transform can't affect it -->
 <nav class="mobile-nav glass" aria-label="Mobile" data-mobile-nav>
   {
     links.concat([{ href: '#top', label: 'top' }]).map((l) => (
@@ -100,12 +94,10 @@ const links = [
   .nav.scrolled .nav-inner {
     box-shadow: 0 10px 40px -20px rgba(0, 0, 0, 0.5);
   }
-  /* hide up on scroll-down, show on scroll-up */
   .nav.hide-up {
     transform: translateY(-130%);
   }
 
-  /* brand */
   .brand {
     display: inline-flex;
     align-items: center;
@@ -131,7 +123,6 @@ const links = [
     letter-spacing: -0.02em;
   }
 
-  /* desktop links */
   .nav-links {
     display: flex;
     gap: 0.2rem;
@@ -171,12 +162,10 @@ const links = [
     gap: 0.5rem;
   }
 
-  /* mobile bottom-sheet */
   .mobile-nav {
     display: none;
   }
 
-  /* hide googly eyes on mobile — it's a cursor-based feature */
   .googly-desktop { display: contents; }
   @media (max-width: 760px) {
     .nav-links {
@@ -187,7 +176,6 @@ const links = [
     }
   }
 
-  /* mobile bottom-sheet — now a sibling of <header>, not nested */
   .mobile-nav {
     display: none;
   }
@@ -234,14 +222,12 @@ const links = [
 </style>
 
 <script>
-  // ── Nav behaviour: hide-on-scroll, active section, smooth anchor ───────
   const nav = document.querySelector<HTMLElement>('[data-nav]');
   if (nav) {
     let lastY = 0;
     const onScroll = () => {
       const y = window.scrollY;
       nav.classList.toggle('scrolled', y > 12);
-      // hide on down-scroll past 200px, show on up-scroll
       if (y > 200 && y > lastY) nav.classList.add('hide-up');
       else nav.classList.remove('hide-up');
       lastY = y;
@@ -250,11 +236,9 @@ const links = [
     onScroll();
   }
 
-  // ── Active section via IntersectionObserver ────────────────────────────
   const links = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')
   );
-  // de-duplicate hrefs: both desktop and mobile links share [data-nav-link]
   const uniqueHrefs = [...new Set(links.map((l) => l.getAttribute('href') || ''))];
   const sections = uniqueHrefs
     .map((href) => document.querySelector(href))
@@ -278,8 +262,6 @@ const links = [
     sections.forEach((s) => io.observe(s));
   }
 
-  // ── Smooth-scroll with header offset (graceful; respects reduced motion) ─
-  // Works on both desktop and mobile nav links, including touch
   links.forEach((l) => {
     const handler = (e: Event) => {
       const id = l.getAttribute('href');

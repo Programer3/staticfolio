@@ -1,9 +1,4 @@
 ---
-/**
- * Contact — glassy form with custom inline validation.
- * Static-safe: posts to portfolio.contactEndpoint if set, else falls back to
- * a mailto: link built from the validated fields. No backend required.
- */
 import { portfolio } from '../../data/portfolio';
 import Icon from '../Icon.astro';
 
@@ -22,7 +17,7 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
       <p class="contact-lead">
         the fastest way to my inbox.
         <br />
-        no <em>thoughts &amp; prayers</em> forms, no recruiter funnels — just you, me, and a reply within a day or two.
+        no <em>thoughts & prayers</em> forms, no recruiter funnels — just you, me, and a reply within a day or two.
       </p>
 
       <ul class="contact-channels" aria-label="Direct contact channels">
@@ -203,7 +198,6 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
     color: var(--t-text-muted);
   }
 
-  /* form */
   .contact-form {
     padding: 1.5rem;
     border-radius: var(--radius-lg);
@@ -286,7 +280,6 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
 </style>
 
 <script>
-  // ── Contact form: inline validation + endpoint/mailto dispatch ─────────
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
   if (form) {
     const status = form.querySelector<HTMLElement>('[data-form-status]')!;
@@ -296,12 +289,10 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
     const sendBtn = form.querySelector<HTMLButtonElement>('[data-send-btn]')!;
     const sendInner = form.querySelector<HTMLElement>('[data-send-inner]')!;
 
-    // Tactile success: punch + ripple + "sent ✓" label swap. Fires only on a
-    // valid submit; the invalid branch returns early before this is called.
     let sentTimer = 0;
     const fireSuccess = () => {
       sendBtn.classList.remove('is-sent');
-      void sendBtn.offsetWidth; // restart the keyframes
+      void sendBtn.offsetWidth;
       sendBtn.classList.add('is-sent');
       const prev = sendInner.innerHTML;
       sendInner.textContent = 'sent ✓';
@@ -333,7 +324,6 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
       form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')
     );
 
-    // live validation on blur + counter
     fields.forEach((f) =>
       f.addEventListener('blur', () => validateField(f))
     );
@@ -342,7 +332,6 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
     });
 
     form.addEventListener('submit', async (e) => {
-      // validate all
       const ok = fields.map(validateField).every(Boolean);
       if (!ok) {
         e.preventDefault();
@@ -353,7 +342,6 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
         return;
       }
 
-      // if no endpoint, build a mailto fallback
       if (!endpoint) {
         e.preventDefault();
         const data = new FormData(form);
@@ -363,18 +351,15 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
         const subject = encodeURIComponent(`portfolio message from ${name}`);
         const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
         fireSuccess();
-        // build directly against the known email
         window.location.href = `mailto:${(window as any).__folioEmail || 'hello@example.com'}?subject=${subject}&body=${body}`;
         status.textContent = '✓ opening your mail client…';
         status.className = 'form-status ok';
         return;
       }
 
-      // endpoint path: let the browser submit, but show optimistic status
       fireSuccess();
       status.textContent = '→ sending…';
       status.className = 'form-status';
-      // (the form will navigate away on success to the endpoint's thank-you page)
     });
   }
 </script>

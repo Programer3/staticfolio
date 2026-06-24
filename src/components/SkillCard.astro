@@ -1,9 +1,4 @@
 ---
-/**
- * SkillCard — tool-wall tile (prev1 style).
- * Icon tile + name, hover-reveals the "use" line, hover lift + ~12° inner tilt.
- * NO percentages, NO bars. Click/keyboard opens a small detail modal.
- */
 import Icon from './Icon.astro';
 
 interface Props {
@@ -61,9 +56,6 @@ const { name, icon, use } = Astro.props;
     text-align: center;
     transform-style: preserve-3d;
     transition: transform 0.2s ease;
-    /* fixed min-height fits icon + name + 2 use lines → all cards in a row
-       share identical height, so hover never resizes the card or shoves
-       neighbors. */
     min-height: 7.6rem;
   }
   .sc-icon {
@@ -92,8 +84,6 @@ const { name, icon, use } = Astro.props;
   .skill-card:focus-visible .sc-name {
     color: var(--t-accent);
   }
-  /* The use line always occupies its 2-line space; rest state is dim and
-     nudged down, hover brightens + lifts. No max-height toggle → no reflow. */
   .sc-use {
     font-family: var(--font-mono);
     font-size: 0.66rem;
@@ -113,7 +103,6 @@ const { name, icon, use } = Astro.props;
 </style>
 
 <script>
-  // ~12° inner-content tilt (prev1 style). Skipped on touch / reduced motion.
   const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!touch && !reduce) {
@@ -132,7 +121,6 @@ const { name, icon, use } = Astro.props;
     });
   }
 
-  // Detail modal (keyboard + click accessible)
   document.querySelectorAll<HTMLElement>('.skill-card').forEach((card) => {
     const open = () => {
       const name = card.dataset.skillName || '';

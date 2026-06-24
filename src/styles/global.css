@@ -1,21 +1,11 @@
-/* ╔══════════════════════════════════════════════════════════════════╗
-   ║  GLOBAL STYLESHEET — Tailwind v4 + theme tokens + base layer        ║
-   ╚══════════════════════════════════════════════════════════════════╝
-   - Tailwind imported first (CSS-first config via @import "tailwindcss")
-   - @theme registers custom tokens Tailwind utilities can consume
-   - Per-theme variable blocks reference the token map from themes.ts
-*/
-
 @import 'tailwindcss';
 
-/* self-hosted fonts (Fontsource) */
 @import '@fontsource-variable/jetbrains-mono';
 @import '@fontsource-variable/space-grotesk';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
 @import '@fontsource/ibm-plex-mono/600.css';
 
-/* ── Tailwind theme bridge ───────────────────────────────────────────── */
 @theme {
   --font-sans: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'IBM Plex Mono', ui-monospace, monospace;
@@ -40,10 +30,6 @@
   --radius-xl: 32px;
 }
 
-/* ╔ Default theme: Panda ══════════════════════════════════════════════
-   :root holds the default; [data-theme] blocks override per-theme.
-   Variable names mirror ThemeTokens in themes.ts.
-*/
 :root,
 [data-theme='panda'] {
   --t-bg: #0d0d0f;
@@ -225,11 +211,6 @@
   --t-glow: 0.3;
 }
 
-/* ── Seamless site background: grid + ambient orbs ──────────────────────
-   Fixed, full-viewport, pointer-events:none. The grid is line-based for the
-   blueprint theme (engineering drafting table) and a soft dot grid for every
-   other theme. Ambient orbs + the body bg flow continuously across sections
-   so there are no hard seams between hero/about/projects/contact/footer. */
 .site-grid {
   position: fixed;
   inset: 0;
@@ -247,8 +228,6 @@
   opacity: 0.5;
   transition: opacity 0.4s ease;
 }
-/* Blueprint gets the engineering line grid instead of dots, with elevation
-   shadows for contrast over the deep blue. */
 [data-theme='blueprint'] .site-grid {
   background-image:
     linear-gradient(color-mix(in srgb, var(--t-text) 10%, transparent) 1px, transparent 1px),
@@ -289,7 +268,6 @@
 [data-theme='light'] .amb-orb,
 [data-mode='light'] .amb-orb { opacity: 0.1; }
 
-/* keep all content above the fixed background layers */
 body > main,
 body > header,
 body > footer,
@@ -298,7 +276,6 @@ body > [data-hud] {
   z-index: 1;
 }
 
-/* ── Base layer ──────────────────────────────────────────────────────── */
 @layer base {
   * {
     border-color: var(--t-border);
@@ -422,28 +399,25 @@ body > [data-hud] {
   }
 }
 
-/* ╔ Custom utilities ════════════════════════════════════════════════ */
-
-/* glassmorphism surface */
-@utility glass {
+.glass {
   background: var(--t-surface);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  --glass-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
   border: 1px solid var(--t-border);
 }
 
-/* stronger glass with inner highlight */
-@utility glass-strong {
+.glass-strong {
   background: color-mix(in srgb, var(--t-surface) 60%, var(--t-bg-alt));
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  --glass-filter-strong: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: var(--glass-filter-strong);
+  backdrop-filter: var(--glass-filter-strong);
   border: 1px solid var(--t-border-strong);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--t-text) 8%, transparent),
     0 20px 60px -20px rgba(0, 0, 0, calc(var(--t-glow) * 0.6));
 }
 
-/* accent gradient text */
 @utility gradient-text {
   background: linear-gradient(
     120deg,
@@ -456,7 +430,6 @@ body > [data-hud] {
   -webkit-text-fill-color: transparent;
 }
 
-/* blueprint-style technical grid background */
 @utility grid-bg {
   background-image:
     linear-gradient(var(--t-border) 1px, transparent 1px),
@@ -465,13 +438,11 @@ body > [data-hud] {
   background-position: -1px -1px;
 }
 
-/* magnetic-button helper: cursor should still feel native on touch */
 @utility magnetic {
   will-change: transform;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* reveal-from-scroll: hidden until GSAP touches it (with reduced-motion safe) */
 [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
@@ -485,18 +456,15 @@ body > [data-hud] {
   }
 }
 
-/* hide custom cursor on touch devices */
 @media (hover: none), (pointer: coarse) {
   [data-cursor] {
     display: none !important;
   }
-  /* safety net: snake game (konami code) should never appear on touch */
-  .snake-overlay {
+    .snake-overlay {
     display: none !important;
   }
 }
 
-/* terminal-style blinking caret */
 @keyframes caret-blink {
   0%,
   49% {
@@ -515,7 +483,6 @@ body > [data-hud] {
   margin-left: 0.1em;
 }
 
-/* slow ambient float */
 @keyframes float-y {
   0%,
   100% {
@@ -529,7 +496,6 @@ body > [data-hud] {
   animation: float-y 6s ease-in-out infinite;
 }
 
-/* snake game modal (launched via konami code in interactions.ts) */
 .snake-title {
   font-size: 1.2rem;
   margin: 0 0 0.5rem;
@@ -562,7 +528,6 @@ body > [data-hud] {
   color: var(--t-text-muted);
 }
 
-/* skip-link visible only when focused */
 .skip-link {
   position: fixed;
   top: -100px;
@@ -579,7 +544,6 @@ body > [data-hud] {
   top: 1rem;
 }
 
-/* utility: clamp text */
 .clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -593,9 +557,6 @@ body > [data-hud] {
   overflow: hidden;
 }
 
-/* ╔ Magnetic button system ═════════════════════════════════════════════
-   Unscoped so both the <MagneticButton> component and the Contact form's
-   standalone submit button share the exact same tactile treatment. */
 .mb {
   --pad-y: 0.7rem;
   --pad-x: 1.25rem;
@@ -679,10 +640,6 @@ body > [data-hud] {
 .mb--ghost { background: transparent; color: var(--t-text-muted); }
 .mb--ghost:hover { color: var(--t-text); background: var(--t-surface); }
 
-/* ╔ Send-button success effect ═════════════════════════════════════════
-   Fires only on a valid submit (wired in Contact.astro). Punch scale +
-   accent ripple ring + label swap to "sent ✓". Unscoped so the standalone
-   submit button picks it up. */
 .mb-ripple {
   position: absolute;
   inset: 50% auto auto 50%;
@@ -712,7 +669,6 @@ body > [data-hud] {
   100% { opacity: 0; transform: scale(2.4); }
 }
 
-/* ╔ Modal primitives (created dynamically by SkillCard / Snake) ═══════ */
 .modal-overlay,
 .skill-modal-overlay,
 .snake-overlay {

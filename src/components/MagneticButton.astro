@@ -1,11 +1,4 @@
 ---
-/**
- * MagneticButton — a button / link that drifts toward the cursor.
- * - Renders as <a> when `href` is set, else <button>.
- * - Magnetic pull handled by data-attribute + global script (no per-instance JS).
- * - Variants: primary | ghost | outline. Sizes: sm | md | lg.
- * - `download` prop forces download link behavior.
- */
 import Icon from './Icon.astro';
 
 interface Props {
@@ -59,9 +52,3 @@ const cls = [
     {iconRight && <Icon slug={iconRight} size={size === 'lg' ? 18 : 16} class="mb-icon" />}
   </span>
 </Tag>
-
-<!--
-  .mb / .mb--* / .mb-inner styles live in src/styles/global.css (unscoped) so
-  they also style the Contact form's submit button, which can't be an instance
-  of this component but must share the same tactile look + interactions.
--->

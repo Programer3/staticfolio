@@ -1,21 +1,9 @@
-/**
- * ╔════════════════════════════════════════════════════════════════════╗
- * ║  YOUR PORTFOLIO — SINGLE SOURCE OF TRUTH                              ║
- * ║  Edit the values below to make the entire site yours.                 ║
- * ║  Nothing else in the codebase needs to change for normal updates.     ║
- * ╚════════════════════════════════════════════════════════════════════╝
- *
- * Everything here ships as rich, realistic PLACEHOLDER content so the site
- * looks complete out of the box. Replace name/bio/projects/skills/links and
- * you're done. Items marked "// ← edit" are the common swap points.
- */
-
 export interface Skill {
   /** short name shown on the orb */
   name: string;
-  /** slug used to resolve the inline brand icon (see components/icons/*) */
+  /** slug used to resolve the inline brand icon */
   icon: string;
-  /** a punchy one-liner of what you actually USE it for — NOT a definition */
+  /** a punchy one-liner of what you actually USE it for */
   use: string;
 }
 
@@ -69,7 +57,7 @@ export interface Portfolio {
   proposition: string;
   /** a couple of supporting lines for the hero */
   heroSub: string[];
-  /** 2–3 sentence about blurb */
+  /** 2-3 sentence about blurb */
   about: string[];
   /** currently-focused line ("these days I'm…") */
   nowadays: string;
@@ -84,19 +72,14 @@ export interface Portfolio {
   projects: Project[];
 }
 
-/* ────────────────────────────────────────────────────────────────────────
- *  ↓↓↓  EDIT EVERYTHING BELOW THIS LINE  ↓↓↓
- * ──────────────────────────────────────────────────────────────────────── */
+// ── EDIT EVERYTHING BELOW THIS LINE ──────────────────────────────────
 
 export const portfolio: Portfolio = {
-  // ← edit: your name
   name: 'Aman Verma',
-  // ← edit: your role
   role: 'Software Engineer · Interface Tinkerer',
   location: 'Bengaluru, IN · Remote-friendly',
   experienceYears: 8,
   availability: 'Open to senior FE / full-stack roles',
-  // ← edit: the one line recruiters see first
   proposition: 'I build interfaces that feel alive — fast, weird, and deliberate.',
   heroSub: [
     '8 years turning pixels into products.',
@@ -110,21 +93,15 @@ export const portfolio: Portfolio = {
   ],
   nowadays:
     'Currently neck-deep in view transitions, islands architecture, and shaving milliseconds off LCP.',
-  // ← edit: drop your real CV at /public/cv.pdf
   cvUrl: '/cv.pdf',
-  // ← edit: paste your Formspree/Formspark/Web3Forms endpoint, or leave ''
-  //         (empty string = the form falls back to a mailto: link)
   contactEndpoint: '',
-  email: 'hello@example.com', // ← edit
+  email: 'hello@example.com',
   socials: [
     { label: 'GitHub', href: 'https://github.com/', icon: 'github' },
     { label: 'X / Twitter', href: 'https://x.com/', icon: 'x' },
     { label: 'LinkedIn', href: 'https://linkedin.com/', icon: 'linkedin' },
     { label: 'Reddit', href: 'https://reddit.com/', icon: 'reddit' },
   ],
-  // ── Skills ─────────────────────────────────────────────────────────────
-  // ~20, curated. NO percentages, NO bars. `icon` maps to components/icons/*.
-  // If a slug has no icon it gracefully falls back to a monogram tile.
   skills: [
     { name: 'TypeScript', icon: 'typescript', use: 'types-first APIs & tooling' },
     { name: 'React', icon: 'react', use: 'component graphs & Suspense' },
@@ -147,8 +124,6 @@ export const portfolio: Portfolio = {
     { name: 'Figma', icon: 'figma', use: 'design-to-code handoff' },
     { name: 'AWS', icon: 'aws', use: 'infra when it earns its keep' },
   ],
-  // ── Projects ───────────────────────────────────────────────────────────
-  // Curated, real-world-style. NOT templates. Replace with yours.
   projects: [
     {
       title: 'Halftone',

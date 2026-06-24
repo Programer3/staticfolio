@@ -1,9 +1,4 @@
 ---
-/**
- * GrainOverlay — fixed full-screen film-grain layer driven by --t-grain.
- * Pure CSS, opacity-bound to the active theme so light themes (paper) feel
- * paperier. Pointer-events: none so it never blocks clicks.
- */
 ---
 <div class="grain-layer" aria-hidden="true"></div>
 
@@ -16,36 +11,19 @@
     opacity: var(--t-grain, 0.05);
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    /* tiny drift so the grain feels alive, not static */
     animation: grain-shift 8s steps(6) infinite;
     transition: opacity 0.4s ease;
   }
   @keyframes grain-shift {
-    0% {
-      transform: translate(0, 0);
-    }
-    16% {
-      transform: translate(-2%, 1%);
-    }
-    33% {
-      transform: translate(1%, -2%);
-    }
-    50% {
-      transform: translate(-1%, 2%);
-    }
-    66% {
-      transform: translate(2%, -1%);
-    }
-    83% {
-      transform: translate(-2%, -2%);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
+    0% { transform: translate(0, 0); }
+    16% { transform: translate(-2%, 1%); }
+    33% { transform: translate(1%, -2%); }
+    50% { transform: translate(-1%, 2%); }
+    66% { transform: translate(2%, -1%); }
+    83% { transform: translate(-2%, -2%); }
+    100% { transform: translate(0, 0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .grain-layer {
-      animation: none;
-    }
+    .grain-layer { animation: none; }
   }
 </style>

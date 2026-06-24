@@ -1,12 +1,3 @@
-/**
- * ── Theme system ─────────────────────────────────────────────────────────
- * Nine hand-tuned palettes. Each is a flat map of CSS custom properties
- * consumed in global.css under [data-theme="…"] blocks.
- *
- * Keys map to the --t-* tokens documented in src/styles/global.css.
- * Keep the key set in sync across all themes — the UI reads these names.
- */
-
 export interface ThemeTokens {
   bg: string; // page background
   bgAlt: string; // elevated surface

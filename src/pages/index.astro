@@ -1,8 +1,4 @@
 ---
-/**
- * Home — single-page portfolio. All sections composed here.
- * Global interactions (GSAP reveals, magnetic, parallax, konami) load once.
- */
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import ActivityHUD from '../components/ActivityHUD.astro';
@@ -29,15 +25,12 @@ import { portfolio } from '../data/portfolio';
 
   <Footer />
 
-  <!-- the signature piece -->
   <ActivityHUD />
 
-  <!-- expose email for contact fallback without putting it in inline JS string -->
   <script is:inline define:vars={{ contactEmail: portfolio.email }}>
     window.__folioEmail = contactEmail;
   </script>
 
-  <!-- global interactions -->
   <script>
     import '../scripts/interactions.ts';
   </script>

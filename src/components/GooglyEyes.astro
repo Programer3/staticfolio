@@ -1,11 +1,5 @@
 ---
-/**
- * GooglyEyes — a pill button with two googly eyes whose pupils track the
- * cursor (Minecraft-inventory style). Pure delight: clicks trigger a blink.
- * Decorative (aria-label set); theme-aware whites/pupils from tokens.
- */
 ---
-
 <button type="button" class="eyes glass" data-googly-eyes aria-label="hello (blink)" data-cursor-label="hi">
   <span class="eye"><span class="pupil" data-pupil></span></span>
   <span class="eye"><span class="pupil" data-pupil></span></span>
@@ -45,7 +39,6 @@
     transition: transform 0.12s ease-out;
     will-change: transform;
   }
-  /* blink: eyelid sweeps down then up */
   .eyes.blink .eye {
     animation: blink 0.32s ease-in-out;
   }
@@ -60,9 +53,6 @@
 </style>
 
 <script>
-  // One global pointermove drives every googly-eyes instance on the page.
-  // Pupils only track while the button is on-screen (IntersectionObserver),
-  // so off-screen instances do zero work.
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-googly-eyes]'));
   if (buttons.length && !reduce) {
@@ -90,7 +80,7 @@
         const dx = e.clientX - cx;
         const dy = e.clientY - cy;
         const dist = Math.hypot(dx, dy) || 1;
-        const max = 3.5; // px the pupil can travel inside the eye
+        const max = 3.5;
         const k = Math.min(max, dist * 0.06) / dist;
         const tx = dx * k;
         const ty = dy * k;
@@ -98,11 +88,10 @@
       });
     }, { passive: true });
 
-    // blink on click
     instances.forEach(({ btn }) => {
       btn.addEventListener('click', () => {
         btn.classList.remove('blink');
-        void btn.offsetWidth; // restart animation
+        void btn.offsetWidth;
         btn.classList.add('blink');
         setTimeout(() => btn.classList.remove('blink'), 360);
       });

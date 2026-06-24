@@ -1,17 +1,11 @@
 ---
-/**
- * Hero — above-the-fold value proposition.
- * One sharp line, no fluff. Parallax SVG backdrop, staggered GSAP reveal.
- */
 import { portfolio } from '../../data/portfolio';
 import MagneticButton from '../MagneticButton.astro';
 import Icon from '../Icon.astro';
 ---
 
 <section id="hero" class="hero" aria-labelledby="hero-title">
-  <!-- ambient orbs (grid is a shared fixed layer in Base.astro) -->
   <div class="hero-bg" aria-hidden="true">
-    <!-- floating accent orbs -->
     <span class="orb orb-1 float-y" data-parallax="0.25"></span>
     <span class="orb orb-2 float-y" data-parallax="0.4" style="animation-delay:-2s"></span>
     <span class="orb orb-3 float-y" data-parallax="0.15" style="animation-delay:-4s"></span>
@@ -112,6 +106,7 @@ import Icon from '../Icon.astro';
     border-radius: 999px;
     background: var(--t-surface);
     border: 1px solid var(--t-border);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     font-family: var(--font-mono);
     font-size: 0.74rem;
@@ -130,7 +125,6 @@ import Icon from '../Icon.astro';
   .hero-title .line {
     display: block;
   }
-  /* gradient a few words via the accent — applied through a span in the proposition? */
   .hero-title :global(.accent) {
     background: linear-gradient(120deg, var(--t-accent), var(--t-accent-2));
     -webkit-background-clip: text;
@@ -190,7 +184,6 @@ import Icon from '../Icon.astro';
     color: var(--t-text);
   }
 
-  /* scroll cue */
   .hero-scroll {
     position: absolute;
     bottom: 1.5rem;
@@ -236,11 +229,6 @@ import Icon from '../Icon.astro';
     .hero-meta { gap: 0.8rem 1.5rem; }
   }
 
-  /* "weird" — character scramble resolves back to the original word.
-     Width is locked to the original text so swapping glyphs (which differ in
-     width across sans/mono fonts) can't reflow the title. overflow + vertical-
-     align prevent the span from growing wider than its locked width and pushing
-     sibling text to the next line during the scramble animation. */
   .word-scramble {
     color: var(--t-accent);
     cursor: default;
@@ -248,13 +236,10 @@ import Icon from '../Icon.astro';
     white-space: nowrap;
     vertical-align: top;
   }
-  /* only clip overflow when scramble animation is active (desktop) */
   .word-scramble.scramble-ready {
     overflow: hidden;
   }
 
-  /* "alive" — a gentle breathe: scale + soft accent glow. Transform/shadow
-     only, so it never reflows on any font. */
   .word-breathe {
     color: var(--t-accent-2);
     cursor: default;
@@ -283,8 +268,6 @@ import Icon from '../Icon.astro';
 </style>
 
 <script>
-  // count-up (exp counter) + "alive" scramble on hover. Both lightweight,
-  // short, and resolve smoothly. Skipped under reduced motion.
   import { initCountUp } from '../../scripts/countUp';
   initCountUp();
 
@@ -296,25 +279,19 @@ import Icon from '../Icon.astro';
       const original = el.dataset.scramble || el.textContent || '';
       let raf = 0;
 
-      // Lock the span width to the original word so glyph swaps during the
-      // scramble can't reflow the title — fixes sans fonts (claude/panda)
-      // where glyph widths differ from the original letters.
       const lockWidth = () => {
         el.textContent = original;
         el.style.minWidth = '';
         el.style.maxWidth = '';
         const w = el.getBoundingClientRect().width;
         if (w > 0) {
-          // +2px buffer prevents sub-pixel clipping across fonts/screens
           el.style.minWidth = (w + 2) + 'px';
           el.style.maxWidth = (w + 2) + 'px';
         }
       };
       lockWidth();
-      // Mark as ready for overflow:hidden only after width is locked
       el.classList.add('scramble-ready');
 
-      // Recalculate after web fonts finish loading
       document.fonts.ready.then(() => {
         lockWidth();
       });

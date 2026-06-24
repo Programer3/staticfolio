@@ -1,10 +1,4 @@
 ---
-/**
- * ProjectCard — a bento cell for a single project.
- * - Generated SVG preview (ProjectPreview) that animates on hover.
- * - Title, year, tagline, tech chips, live + repo links.
- * - `featured` projects span 2 columns on wider grids.
- */
 import type { Project } from '../data/portfolio';
 import ProjectPreview from './ProjectPreview.astro';
 import Icon from './Icon.astro';
@@ -207,8 +201,6 @@ const cls = ['project-card', project.featured ? 'is-featured' : ''].filter(Boole
 </style>
 
 <script>
-  // Inner-body tilt (~6°) — the card itself lifts on hover; only its body
-  // tilts toward the pointer, like prev1's project cards. Skipped on touch.
   const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!touch && !reduce) {

@@ -1,8 +1,20 @@
 {
-  "name": "githubpages-folio",
+  "name": "staticfolio",
   "type": "module",
   "version": "1.0.0",
   "private": true,
+  "description": "Dark-mode-first developer portfolio built with Astro, GSAP, and Tailwind CSS v4",
+  "author": "Aman Verma",
+  "license": "MIT",
+  "homepage": "https://github.com/your-username/your-repo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/your-repo/issues"
+  },
+  "keywords": ["portfolio", "astro", "gsap", "tailwindcss", "developer-portfolio"],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

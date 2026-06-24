@@ -1,10 +1,4 @@
 ---
-/**
- * ThemeSwitcher — accessible dropdown of 9 themes.
- * - data-theme is set on <html> and persisted in localStorage.
- * - Keyboard accessible (button + menu), closes on Escape/outside-click.
- * - Each theme shows glyph + label + vibe blurb.
- */
 import { themes, defaultThemeId } from '../data/themes';
 ---
 
@@ -158,10 +152,6 @@ import { themes, defaultThemeId } from '../data/themes';
 </style>
 
 <script>
-  // ── Theme switcher behaviour ───────────────────────────────────────────
-  // Open menu: ArrowUp/Down move the highlight AND apply the theme live each
-  // press. The live-select loop only ends on Enter (confirm + close), any
-  // other key (close), outside click (close), or Escape (close).
   const root = document.querySelector<HTMLElement>('[data-theme-switcher]');
   if (root) {
     const trigger = root.querySelector<HTMLButtonElement>('.trigger')!;
@@ -236,7 +226,6 @@ import { themes, defaultThemeId } from '../data/themes';
       });
     });
 
-    // Close on outside click
     document.addEventListener('click', (e) => {
       if (!root.contains(e.target as Node)) close();
     });

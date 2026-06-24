@@ -1,11 +1,4 @@
 ---
-/**
- * Base layout — the document shell.
- * - Inlines an anti-FOUC theme script in <head> (runs before paint)
- * - Loads global styles (Tailwind + theme tokens + fonts)
- * - Renders the grain overlay, custom cursor, nav, footer slots
- * - Injects JSON-LD for SEO + console banner easter egg
- */
 import '../styles/global.css';
 import { portfolio } from '../data/portfolio';
 import GrainOverlay from '../components/GrainOverlay.astro';
@@ -33,14 +26,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
     <link rel="canonical" href={canonical} />
     <meta name="color-scheme" content="dark light" />
 
-    <!-- ═══ Primary meta ═══ -->
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={portfolio.name} />
     <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
 
-    <!-- ═══ Open Graph ═══ -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -51,33 +42,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="/og-image.svg" />
 
-    <!-- ═══ Icons ═══ -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- ═══ Fonts preconnect (self-hosted, just hints) ═══ -->
     <link rel="preconnect" href="/" crossorigin />
 
-    <!-- ═══ Anti-FOUC theme script: runs synchronously before paint ═══ -->
     <script is:inline>
       (function () {
         try {
           var stored = localStorage.getItem('folio-theme');
-          var prefersDark =
-            window.matchMedia &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches;
           var theme = stored || 'panda';
           document.documentElement.setAttribute('data-theme', theme);
-          // expose for components that read it before main.js hydrates
           window.__folioTheme = theme;
         } catch (e) {
-          /* localStorage blocked — fall through to default */
+          /* localStorage blocked */
         }
       })();
     </script>
 
-    <!-- ═══ JSON-LD structured data ═══ -->
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
@@ -93,13 +76,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
       })}
     />
 
-    <!-- ═══ Sitemap-friendly robots hint ═══ -->
     <meta name="robots" content="index,follow" />
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
 
-    <!-- Grain + cursor + ambient layers -->
     <div class="site-grid" aria-hidden="true"></div>
     <div class="site-ambient" aria-hidden="true">
       <span class="amb-orb amb-1"></span>
@@ -110,7 +91,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 
     <slot />
 
-    <!-- ═══ Console banner easter egg ═══ -->
     <script is:inline>
       console.log(
         '%c↑ looking under the hood? nice. %c\n%c%s%c\n%c%s',

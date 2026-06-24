@@ -1,17 +1,3 @@
-/**
- * countUp — shared count-up, started when the element scrolls into view.
- * Drives the LOC counter total (easeOutCubic) and the hero "exp" counter
- * (piecewise easeInExpo → easeOutBack, gated on page visibility) so they
- * share one animation language. Degrades instantly under reduced motion.
- *
- * Per-element opt-in via data attributes:
- *   data-count-up            required to be picked up
- *   data-target="N"          target integer
- *   data-duration="ms"       (default 1600)
- *   data-ease="expoback"     use the piecewise expo→back curve (hero exp).
- *                            Default is easeOutCubic (LOC counter).
- *   data-visibility="1"      wait until the tab is visible before starting.
- */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function easeOutCubic(t: number): number {
@@ -26,7 +12,6 @@ function easeOutBack(t: number, s = 1.7): number {
   return 1 + (s + 1) * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2);
 }
 
-// Slow dramatic expo start, then an overshooting back settle.
 function easeExpoBack(t: number): number {
   return t < 0.5 ? easeInExpo(t * 2) / 2 : 0.5 + easeOutBack((t - 0.5) * 2) / 2;
 }
