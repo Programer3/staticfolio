@@ -75,7 +75,7 @@ export const themes: Theme[] = [
   {
     id: 'claude',
     label: 'Claude',
-    glyph: '🧡',
+    glyph: '🟠',
     tokens: {
       bg: '#1f1d1a',
       bgAlt: '#26231f',
@@ -236,7 +236,7 @@ export const themes: Theme[] = [
   {
     id: 'tf2red',
     label: 'TF2 Red',
-    glyph: '🔴',
+    glyph: '🧢',
     tokens: {
       bg: '#dddfd3',
       bgAlt: '#CDD0C2',

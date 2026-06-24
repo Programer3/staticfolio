@@ -10,7 +10,7 @@
 
 ## Features
 
-- **11 themes** — Midnight, Dracula, Claude, Terminal, Winter, Emerald, Blueprint, Paper, Cupcake, TF2 Red. Persisted in `localStorage`, FOUC-free with synchronous inline script.
+- **10 themes** — Panda, Dracula, Claude, Terminal, Winter, Emerald, Blueprint, Paper, Cupcake, TF2 Red. Persisted in `localStorage`, FOUC-free with synchronous inline script.
 - **Live Activity HUD** — real-time session metrics (keystrokes, scroll, idle, uptime, velocity sparkline). Pure vanilla, zero backend.
 - **Custom cursor** — dot + trailing ring, `mix-blend-mode: difference`, grows on interactive targets. Touch-safe (auto-hides on coarse pointers).
 - **GSAP micro-interactions** — scroll reveals, parallax, magnetic buttons, 3D tilt on cards.
@@ -30,10 +30,10 @@
 # Install dependencies
 npm install
 
-# Start dev server at localhost:6767
+# Start dev server at localhost:6767 (brainrot)
 npm run dev
 
-# Build static site to dist/
+# Build static site output to dist/
 npm run build
 
 # Preview the built site
@@ -84,7 +84,7 @@ Drop your real résumé at `public/cv.pdf`. The download button in the nav links
 |----|------|------|
 | `panda` | Panda | monochrome mono (default) |
 | `dracula` | Dracula | synthwave purple |
-| `claude` | Claude | warm paper clay |
+| `claude` | Claude | just like Anthropic |
 | `terminal` | Terminal | CRT phosphor |
 | `winter` | Winter | frost glass |
 | `emerald` | Emerald | deep canopy light |

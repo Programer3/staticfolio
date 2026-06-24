@@ -4,11 +4,11 @@ import MagneticButton from '../MagneticButton.astro';
 import LocCounter from '../LocCounter.astro';
 
 const principles = [
-  'Clean Architecture > Magic',
-  'Tests are documentation',
+  'Program should be QOL',
+  'Tests and documentation',
   'SOLID by default',
   'Out-of-the-box thinking',
-  'Maintainability first',
+  'Program Should give ease',
 ];
 ---
 
@@ -30,26 +30,6 @@ const principles = [
     </div>
 
     <aside class="about-side" data-reveal data-reveal-delay="0.1">
-      <div class="philosophy glass">
-        <h3 class="phi-title">Philosophy</h3>
-        <div class="phi-body">
-          <p>
-            I believe software should be built to last. That means prioritizing
-            maintainability over cleverness, readability over brevity, and
-            testing over speculation.
-          </p>
-          <p>
-            Every line of code is a liability until proven otherwise. I write
-            code that's easy to delete, easy to change, and easy to understand
-            six months from now.
-          </p>
-          <p>
-            I'm an introvert by nature, which means I listen more than I talk,
-            and I think before I act. In code, that translates to fewer bugs,
-            cleaner architecture, and better decisions.
-          </p>
-        </div>
-      </div>
 
       <div class="principles glass">
         <h3 class="pr-h">Core Principles</h3>
@@ -142,23 +122,6 @@ const principles = [
     position: sticky;
     top: 6rem;
   }
-  .philosophy {
-    padding: 1.3rem 1.4rem;
-    border-radius: var(--radius-lg);
-  }
-  .phi-title {
-    font-size: 1.1rem;
-    margin: 0 0 0.8rem;
-    color: var(--t-text);
-  }
-  .phi-body {
-    display: grid;
-    gap: 0.7rem;
-    font-size: 0.86rem;
-    line-height: 1.55;
-    color: var(--t-text-muted);
-  }
-  .phi-body p { margin: 0; }
 
   .principles {
     padding: 1.1rem 1.3rem;
