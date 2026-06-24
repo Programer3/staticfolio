@@ -18,7 +18,7 @@ import { themes, defaultThemeId } from '../data/themes';
     </svg>
   </button>
 
-  <div class="menu glass-strong" role="menu" aria-label="Themes" hidden>
+  <div class="menu glass-strong" role="menu" aria-label="Themes" hidden style="background: transparent; -webkit-backdrop-filter: blur(20px) saturate(150%); backdrop-filter: blur(20px) saturate(150%); border: 1px solid var(--t-border-strong);">
     {
       themes.map((t) => (
         <button
