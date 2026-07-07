@@ -258,11 +258,13 @@ Base.astro
 ### Theme System
 - **FOUC on slow connections** — The inline script handles this, but check if `localStorage` is blocked by browser settings.
 - **Adding a theme but forgetting the CSS block** — The switcher will show it, but CSS variables won't resolve. Always add both `themes.ts` entry and `global.css` block.
+- **Mobile Menu Overflow** — The theme selector dropdown is limited to `55svh` with active vertical scrolling on screen widths < 760px to prevent overlapping with bottom sticky navigation bars.
 
 ### Activity HUD
 - **Bars not animating** — The velocity sparkline only updates on scroll events. If you're on a page with no scroll, the bars stay at minimum height. This is expected.
 - **HUD not showing** — Hidden on screens < 768px. Check viewport width.
 - **Dragging broken** — Only works on desktop (non-touch). The `touch` variable check prevents drag setup on mobile.
+- **Tooltip Clipping** — Tooltips positioned absolute outside bounds will clip if `overflow: hidden` is on the container. The parent `.hud` container is set to default overflow, with overflow hidden applied to `.hud-body` instead.
 
 ### Custom Cursor
 - **Cursor visible on mobile** — Should auto-hide. If not, check media query: `@media (hover: none), (pointer: coarse)`. The dot might briefly appear before JS kicks in.

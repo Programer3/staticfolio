@@ -9,7 +9,20 @@
 >
   <header class="hud-head" data-hud-grip>
     <span class="hud-led" aria-hidden="true"></span>
-    <span class="hud-title">activity · live</span>
+    <span class="hud-title">Session Activity (Live)</span>
+    <div class="hud-info-wrapper">
+      <span class="hud-info-trigger" role="button" aria-label="About session activity">?</span>
+      <div class="hud-tooltip glass-strong">
+        This panel monitors your local browser session interactions in real-time. All data is processed client-side — no cookies are used and no data is sent to any server.
+        <hr class="hud-tooltip-divider" />
+        <strong>uptime:</strong> Time spent on this page.<br />
+        <strong>section:</strong> Active section of the page.<br />
+        <strong>keys:</strong> Key presses recorded.<br />
+        <strong>scrolled:</strong> Pixels scrolled vertically.<br />
+        <strong>idle:</strong> Inactivity timer.<br />
+        <strong>vel:</strong> Scrolling velocity visual.
+      </div>
+    </div>
     <div class="hud-actions" aria-hidden="true">
       <button type="button" class="hud-btn" data-hud-min title="minimize">_</button>
       <button type="button" class="hud-btn" data-hud-close title="dismiss">×</button>
@@ -55,7 +68,6 @@
     z-index: 35;
     width: 16rem;
     border-radius: 14px;
-    overflow: hidden;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--t-text);
@@ -78,9 +90,71 @@
     padding: 0.5rem 0.65rem;
     cursor: grab;
     border-bottom: 1px solid var(--t-border);
+    border-radius: 14px 14px 0 0;
+  }
+  .hud-body {
+    border-radius: 0 0 14px 14px;
+    overflow: hidden;
   }
   .hud-head:active {
     cursor: grabbing;
+  }
+  .hud-info-wrapper {
+    position: relative;
+    display: inline-flex;
+    margin-right: 0.25rem;
+  }
+  .hud-info-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--t-border);
+    font-size: 0.55rem;
+    color: var(--t-text-muted);
+    cursor: help;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    transition-property: border-color, color;
+  }
+  .hud-info-trigger:hover {
+    border-color: var(--t-border-strong);
+    color: var(--t-text);
+  }
+  .hud-tooltip {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: -2.5rem;
+    width: 14rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.6rem;
+    line-height: 1.4;
+    color: var(--t-text-muted);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+    filter: blur(4px);
+    transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-property: opacity, transform, filter;
+    transition-delay: 0s;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  .hud-tooltip-divider {
+    border: 0;
+    border-top: 1px solid var(--t-border);
+    margin: 0.4rem 0;
+  }
+  .hud-info-wrapper:hover .hud-tooltip {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+    transition-delay: 240ms;
   }
   .hud-led {
     width: 8px;

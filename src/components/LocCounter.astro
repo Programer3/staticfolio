@@ -10,7 +10,17 @@
 <aside class="loc glass" data-loc aria-label="Lines of code statistics">
   <div class="loc-head">
     <span class="loc-led" aria-hidden="true"></span>
-    <span class="loc-title">live stats</span>
+    <span class="loc-title">Codebase Stats (Live)</span>
+    <div class="loc-info-wrapper">
+      <span class="loc-info-trigger" role="button" aria-label="About codebase statistics">?</span>
+      <div class="loc-tooltip glass-strong">
+        These live metrics track the physical size and recent updates of this portfolio codebase, fetched dynamically from GitHub.
+        <hr class="loc-tooltip-divider" />
+        <strong>~/$ lines:</strong> Total lines of code.<br />
+        <strong>today:</strong> Lines written today.<br />
+        <strong>last active:</strong> Date of the last update.
+      </div>
+    </div>
   </div>
   <div id="loc-content">
     <div class="loc-loading">Loading…</div>
@@ -33,6 +43,65 @@
     font-size: 0.62rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
+  }
+  .loc-title {
+    flex: 1;
+  }
+  .loc-info-wrapper {
+    position: relative;
+    display: inline-flex;
+  }
+  .loc-info-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--t-border);
+    font-size: 0.55rem;
+    color: var(--t-text-muted);
+    cursor: help;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    transition-property: border-color, color;
+  }
+  .loc-info-trigger:hover {
+    border-color: var(--t-border-strong);
+    color: var(--t-text);
+  }
+  .loc-tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    right: 0;
+    width: 12rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.6rem;
+    line-height: 1.4;
+    color: var(--t-text-muted);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(4px) scale(0.95);
+    filter: blur(4px);
+    transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-property: opacity, transform, filter;
+    transition-delay: 0s;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  .loc-tooltip-divider {
+    border: 0;
+    border-top: 1px solid var(--t-border);
+    margin: 0.4rem 0;
+  }
+  .loc-info-wrapper:hover .loc-tooltip {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+    transition-delay: 240ms;
   }
   .loc-led {
     width: 7px;
@@ -64,13 +133,21 @@
     font-variant-numeric: tabular-nums;
   }
   :global(.loc-v--accent) { color: var(--t-accent); font-size: 0.85rem; }
+  :global(.loc-trend-label) {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--t-text-muted);
+    margin-top: 0.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--t-border);
+  }
   :global(.loc-spark) {
     display: flex;
     align-items: flex-end;
     gap: 2px;
     height: 28px;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--t-border);
+    padding-top: 0.2rem;
   }
   :global(.loc-spark > i) {
     width: 5px;
@@ -107,6 +184,7 @@
     content!.innerHTML =
       `<div class="loc-row"><span class="loc-k">~/$</span><span class="loc-v" style="color:var(--t-text-muted)">—</span></div>` +
       `<div class="loc-row"><span class="loc-k">last active</span><span class="loc-v" style="color:var(--t-text-muted);font-size:0.72rem">awaiting sync</span></div>` +
+      `<div class="loc-trend-label">30-day activity trend</div>` +
       `<div class="loc-spark">${Array.from({ length: 30 }, () => '<i style="height:3px"></i>').join('')}</div>` +
       `<div class="loc-foot">Awaiting first GitHub Actions sync</div>`;
   };
@@ -139,6 +217,7 @@
         row('~/$ lines', totalHtml) +
         row('today', '+' + today.toLocaleString(), 'loc-v loc-v--accent') +
         row('last active', fmtDate(data.updatedAt), 'loc-v" style="font-size:0.72rem') +
+        `<div class="loc-trend-label">30-day activity trend</div>` +
         `<div class="loc-spark">${spark}</div>` +
         `<div class="loc-foot">updated via GitHub Actions</div>`;
       // fire the shared count-up on the freshly injected node

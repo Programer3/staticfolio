@@ -408,7 +408,7 @@ body > [data-hud] {
 }
 
 .glass-strong {
-  background: color-mix(in srgb, var(--t-surface) 60%, var(--t-bg-alt));
+  background: color-mix(in srgb, var(--t-bg-alt) 88%, var(--t-surface));
   --glass-filter-strong: blur(28px) saturate(160%);
   -webkit-backdrop-filter: var(--glass-filter-strong);
   backdrop-filter: var(--glass-filter-strong);
@@ -726,4 +726,10 @@ body > [data-hud] {
   line-height: 1.5;
   color: var(--t-text-muted);
   margin: 0;
+}
+
+@media (max-width: 760px) {
+  .footer {
+    padding-bottom: 7.5rem !important;
+  }
 }

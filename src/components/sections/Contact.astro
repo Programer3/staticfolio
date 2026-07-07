@@ -189,7 +189,7 @@ const hasEndpoint = Boolean(portfolio.contactEndpoint);
     transform: translateY(-1px);
   }
   .channel :global(svg) { color: var(--t-accent); flex-shrink: 0; }
-  .channel span { display: grid; gap: 0.1rem; }
+  .channel span { display: grid; gap: 0.1rem; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
   .channel small {
     font-family: var(--font-mono);
     font-size: 0.62rem;
