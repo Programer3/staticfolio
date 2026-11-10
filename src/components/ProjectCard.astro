@@ -5,9 +5,9 @@ import Icon from './Icon.astro';
 
 interface Props {
   project: Project;
-  index: number;
+  index?: number;
 }
-const { project, index } = Astro.props;
+const { project } = Astro.props;
 const cls = ['project-card', project.featured ? 'is-featured' : ''].filter(Boolean).join(' ');
 ---
 

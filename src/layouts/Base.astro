@@ -62,6 +62,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
     </script>
 
     <script
+      is:inline
       type="application/ld+json"
       set:html={JSON.stringify({
         '@context': 'https://schema.org',

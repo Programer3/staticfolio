@@ -1,0 +1,111 @@
+name: Daily Release
+
+on:
+  schedule:
+    # Runs everyday at 00:00 UTC
+    - cron: '0 0 * * *'
+  # Allows manual triggering at any time from GitHub Actions UI
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-release
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Build & Publish Daily Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Package build artifacts
+        run: |
+          cd dist
+          zip -r ../staticfolio-build.zip .
+          cd ..
+
+      - name: Purge older releases (Keep only 1 active)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Listing all existing releases..."
+          OLD_RELEASES=$(gh release list --limit 100 --json tagName --jq '.[].tagName')
+
+          if [ -n "$OLD_RELEASES" ]; then
+            for tag in $OLD_RELEASES; do
+              echo "Deleting older release: $tag"
+              gh release delete "$tag" --cleanup-tag --yes || true
+            done
+          else
+            echo "No older releases found."
+          fi
+
+      - name: Determine release metadata and live site URL
+        id: meta
+        run: |
+          DATE=$(date -u +'%Y-%m-%d')
+          TAG="v$(date -u +'%Y.%m.%d')"
+          OWNER="${{ github.repository_owner }}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+
+          if [ -f "public/CNAME" ]; then
+            LIVE_URL="https://$(tr -d '\r\n' < public/CNAME)"
+          elif [ "$REPO" = "$OWNER.github.io" ]; then
+            LIVE_URL="https://${OWNER}.github.io/"
+          else
+            LIVE_URL="https://${OWNER}.github.io/${REPO}/"
+          fi
+
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "live_url=$LIVE_URL" >> $GITHUB_OUTPUT
+
+          # Clean up remote tag if already created earlier today
+          git push origin --delete "$TAG" 2>/dev/null || true
+
+          cat << EOF > release_notes.md
+# 🚀 Daily Release — ${DATE}
+
+### 🌐 Live Site
+🔗 **[${LIVE_URL}](${LIVE_URL})**
+
+---
+
+### 📦 Details
+- **Release Tag**: \`${TAG}\`
+- **Date**: ${DATE}
+- **Commit**: [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+- **Policy**: Rolling single active release (older releases are automatically purged)
+
+### 💾 Artifacts
+- \`staticfolio-build.zip\`: Pre-compiled production static site assets
+EOF
+
+      - name: Publish new release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.meta.outputs.tag }}" \
+            staticfolio-build.zip \
+            --title "Daily Release (${{ steps.meta.outputs.date }})" \
+            --notes-file release_notes.md \
+            --target ${{ github.sha }} \
+            --latest
